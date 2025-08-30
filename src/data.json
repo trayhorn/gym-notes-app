@@ -1,0 +1,25 @@
+{
+	"exercises": [
+		{ "id": 1, "value": "Bench Press" },
+		{ "id": 2, "value": "Squat" },
+		{ "id": 3, "value": "Deadlift" },
+		{ "id": 4, "value": "Overhead Press" },
+		{ "id": 5, "value": "Pull-ups" },
+		{ "id": 6, "value": "Bicep Curls" }
+	],
+	"reps": [
+		{ "id": 1, "value": "4x12" },
+		{ "id": 2, "value": "4x10" },
+		{ "id": 3, "value": "3x10" },
+		{ "id": 4, "value": "3x8" },
+		{ "id": 5, "value": "5x5" }
+	],
+	"weights": [
+		{ "id": 1, "value": "10 kg" },
+		{ "id": 2, "value": "12.5 kg" },
+		{ "id": 3, "value": "15 kg" },
+		{ "id": 4, "value": "20 kg" },
+		{ "id": 5, "value": "25 kg" },
+		{ "id": 6, "value": "30 kg" }
+	]
+}

@@ -14,7 +14,7 @@ type AuthFormProps = {
 
 export default function AuthForm({ submitAction }: AuthFormProps) {
 	const navigate = useNavigate();
-	const { setToken } = useContext(AuthContext)!;
+	const { login } = useContext(AuthContext)!;
 
 	return (
 		<>
@@ -22,10 +22,10 @@ export default function AuthForm({ submitAction }: AuthFormProps) {
 				initialValues={{ username: "", password: "" }}
 				onSubmit={async (values, actions) => {
 					try {
-						const { data: { token } } = await submitAction(values);
-						if(token) setToken(token);
-            actions.resetForm();
-            navigate("/");
+						const { data: { token, user } } = await submitAction(values);
+						login(token, user.username);
+						actions.resetForm();
+						navigate("/");
 					} catch (error) {
 						console.error("Error submitting form:", error);
 					}

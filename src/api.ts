@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { AxiosResponse } from "axios";
-import type { authResponse } from "./types";
+import type { authResponse, authCurrentResponse } from "./types";
 
 export const BASE_URL = "http://localhost:3000";
 
@@ -26,5 +26,15 @@ export const logoutUser = (token: string): Promise<AxiosResponse<authResponse>> 
 		headers: {
 			Authorization: `Bearer ${token}`
 		}
+	});
+};
+
+export const fetchCurrentUser = (
+	token: string
+): Promise<AxiosResponse<authCurrentResponse>> => {
+	return axios.get("/auth/current", {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
 	});
 };

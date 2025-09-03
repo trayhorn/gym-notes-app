@@ -4,3 +4,7 @@ export type authResponse = {
 		username: string;
 	};
 };
+
+export type authCurrentResponse = {
+	username: string;
+}

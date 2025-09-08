@@ -1,10 +1,17 @@
 import axios from "axios";
 import type { AxiosResponse } from "axios";
-import type { authResponse, authCurrentResponse } from "./types";
+import type {
+	authResponse,
+	authCurrentResponse,
+	Workout,
+	Params,
+} from "./types";
 
 export const BASE_URL = "http://localhost:3000";
 
 axios.defaults.baseURL = BASE_URL;
+
+// Auth API
 
 export const registerUser = (data: {
 	username: string;
@@ -38,3 +45,32 @@ export const fetchCurrentUser = (
 		},
 	});
 };
+
+// Workouts API
+
+export const fetchAllWorkouts = (token: string): Promise<AxiosResponse<{workouts: Workout[]}>> => {
+	return axios.get("/workouts/", {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+}
+
+
+// Params API
+
+export const fetchAllParams = (token: string): Promise<AxiosResponse<{params: Params[]}>> => {
+	return axios.get("/params/", {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+}
+
+export const addParam = (token: string, data: { type: string; value: string }): Promise<AxiosResponse<Params>> => {
+	return axios.patch("/params/add", data, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+}

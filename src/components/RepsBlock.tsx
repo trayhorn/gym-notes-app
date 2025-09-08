@@ -1,25 +1,24 @@
-import data from "../data.json";
-import { useState } from "react";
 import AddDataForm from "./AddDataForm";
 import { useModal } from "../hooks/useModal";
 import BaseModal from "./BaseModal";
+import type { Params } from "../types";
 
-export default function RepsBlock() {
-	const [repsData, setRepsData] = useState(data.reps);
+type RepsBlockProps = {
+	reps: string[];
+	handleAddParam: (param: Params) => void;
+};
+
+export default function RepsBlock({handleAddParam, reps }: RepsBlockProps) {
 	const { isModalOpen, openModal, closeModal } = useModal();
 
-	const handleAddNewRep = (newData: { id: number; value: string }) => {
-		setRepsData((prev) => [...prev, newData]);
-	};
-
-  return (
+	return (
 		<>
 			<h3 className="text-center text-[20px] font-bold mt-sm mb-sm">Reps</h3>
 			<ul className="blockList">
-				{repsData.map(({ id, value }) => {
+				{reps.map((rep: string) => {
 					return (
-						<li key={id}>
-							<button className="btn">{value}</button>
+						<li key={rep}>
+							<button className="btn">{rep}</button>
 						</li>
 					);
 				})}
@@ -30,7 +29,11 @@ export default function RepsBlock() {
 				</li>
 			</ul>
 			<BaseModal isOpen={isModalOpen} onRequestClose={closeModal}>
-				<AddDataForm addValue={handleAddNewRep} closeModal={closeModal} />
+				<AddDataForm
+					type="reps"
+					closeModal={closeModal}
+					handleAddParam={handleAddParam}
+				/>
 			</BaseModal>
 		</>
 	);

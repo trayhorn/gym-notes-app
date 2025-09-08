@@ -10,7 +10,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	useEffect(() => {
 		const token = localStorage.getItem("authToken");
-		console.log("UseEffect inside AuthProvider");
 
 		try {
 			if (token) {

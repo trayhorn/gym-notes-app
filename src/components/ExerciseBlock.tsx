@@ -1,16 +1,15 @@
-import data from "../data.json";
-import { useState } from "react";
 import BaseModal from "./BaseModal";
 import { useModal } from "../hooks/useModal";
 import AddDataForm from "./AddDataForm";
+import type { Params } from "../types";
 
-export default function ExerciseBlock() {
-  const [exerciseData, setExerciseData] = useState(data.exercises);
+type ExerciseBlockProps = {
+	exercises: string[];
+	handleAddParam: (param: Params) => void;
+};
+
+export default function ExerciseBlock({ handleAddParam, exercises }: ExerciseBlockProps) {
 	const { isModalOpen, openModal, closeModal } = useModal();
-
-	const handleAddNewExercise = (newData: { id: number; value: string }) => {
-		setExerciseData((prev) => [...prev, newData]);
-	};
 
 	return (
 		<>
@@ -18,10 +17,10 @@ export default function ExerciseBlock() {
 				Exercises
 			</h3>
 			<ul className="blockList">
-				{exerciseData.map(({ id, value }) => {
+				{exercises.map((item: string) => {
 					return (
-						<li key={id}>
-							<button className="btn">{value}</button>
+						<li key={item}>
+							<button className="btn">{item}</button>
 						</li>
 					);
 				})}
@@ -32,7 +31,11 @@ export default function ExerciseBlock() {
 				</li>
 			</ul>
 			<BaseModal isOpen={isModalOpen} onRequestClose={closeModal}>
-				<AddDataForm addValue={handleAddNewExercise} closeModal={closeModal} />
+				<AddDataForm
+					type="exercises"
+					closeModal={closeModal}
+					handleAddParam={handleAddParam}
+				/>
 			</BaseModal>
 		</>
 	);

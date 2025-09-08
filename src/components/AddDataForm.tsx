@@ -1,23 +1,34 @@
 import { useState } from "react";
+import { addParam } from "../api";
+import type { Params } from "../types";
 
 type AddDataFormProps = {
-  addValue: (newData: { id: number; value: string }) => void;
-  closeModal: () => void;
+	type: "weights" | "reps" | "exercises";
+	closeModal: () => void;
+	handleAddParam: (param: Params) => void;
 };
 
-export default function AddDataForm({ addValue, closeModal }: AddDataFormProps) {
+export default function AddDataForm({ type, closeModal, handleAddParam }: AddDataFormProps) {
 	const [value, setValue] = useState("");
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setValue(e.target.value);
 	};
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-    addValue({ id: Date.now(), value });
 
-		e.currentTarget.reset();
-		closeModal();
+		const token = localStorage.getItem("authToken");
+		if (token) {
+			try {
+				const { data } = await addParam(token, { type, value });
+				setValue("");
+				handleAddParam(data);
+				closeModal();
+			} catch (e) {
+				console.log(e);
+			}
+		}
 	};
 
 	return (

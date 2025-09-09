@@ -82,6 +82,10 @@
   .blockList {
     @apply flex gap-sm flex-wrap;
   }
+
+  .selected {
+    outline: 2px black solid;
+  }
 }
 
 .active {

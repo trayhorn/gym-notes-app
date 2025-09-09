@@ -56,6 +56,14 @@ export const fetchAllWorkouts = (token: string): Promise<AxiosResponse<{workouts
 	});
 }
 
+export const addWorkout = (token: string, data: { date: string; exercises: { name: string; reps: string; weight: string }[] }): Promise<AxiosResponse<Workout>> => {
+	return axios.post("/workouts/add", data, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+}
+
 
 // Params API
 

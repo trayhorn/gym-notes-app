@@ -35,7 +35,7 @@ function App() {
 				Add Workout
 			</button>
 			<BaseModal isOpen={isModalOpen} onRequestClose={closeModal}>
-				<AddWorkoutForm />
+				<AddWorkoutForm closeModal={closeModal} />
 			</BaseModal>
 			<WorkoutGallery workouts={workouts} />
 		</>

@@ -2,14 +2,22 @@ import BaseModal from "./BaseModal";
 import AddDataForm from "./AddDataForm";
 import { useModal } from "../hooks/useModal";
 import type { Params } from "../types";
+import { useState } from "react";
 
 type WeightsBlockProps = {
 	weights: string[];
 	handleAddParam: (param: Params) => void;
+	handleSetWeight: (value: string) => void;
 };
 
-export default function WeightsBlock({handleAddParam, weights }: WeightsBlockProps) {
+export default function WeightsBlock({handleAddParam, handleSetWeight, weights }: WeightsBlockProps) {
 	const { isModalOpen, openModal, closeModal } = useModal();
+	const [isSelected, setIsSelected] = useState<string>("");
+
+	const handleBtnClick = (value: string) => {
+		handleSetWeight(value);
+		setIsSelected(value);
+	}
 
 	return (
 		<>
@@ -18,7 +26,12 @@ export default function WeightsBlock({handleAddParam, weights }: WeightsBlockPro
 				{weights.map((weight: string) => {
 					return (
 						<li key={weight}>
-							<button className="btn">{weight}</button>
+							<button
+								className={`btn ${isSelected === weight ? "selected" : ""}`}
+								onClick={() => handleBtnClick(weight)}
+							>
+								{weight}
+							</button>
 						</li>
 					);
 				})}

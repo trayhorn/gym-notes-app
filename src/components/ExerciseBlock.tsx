@@ -1,16 +1,14 @@
 import BaseModal from "./BaseModal";
 import { useModal } from "../hooks/useModal";
 import AddDataForm from "./AddDataForm";
-import type { Params } from "../types";
 import { useState } from "react";
 
 type ExerciseBlockProps = {
 	exercises: string[];
-	handleAddParam: (param: Params) => void;
 	handleSetName: (value: string) => void;
 };
 
-export default function ExerciseBlock({ handleAddParam, handleSetName, exercises }: ExerciseBlockProps) {
+export default function ExerciseBlock({ handleSetName, exercises }: ExerciseBlockProps) {
 	const { isModalOpen, openModal, closeModal } = useModal();
 	const [isSelected, setIsSelected] = useState<string>("");
 
@@ -47,7 +45,6 @@ export default function ExerciseBlock({ handleAddParam, handleSetName, exercises
 				<AddDataForm
 					type="exercises"
 					closeModal={closeModal}
-					handleAddParam={handleAddParam}
 				/>
 			</BaseModal>
 		</>

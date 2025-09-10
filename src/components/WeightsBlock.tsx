@@ -1,16 +1,14 @@
 import BaseModal from "./BaseModal";
 import AddDataForm from "./AddDataForm";
 import { useModal } from "../hooks/useModal";
-import type { Params } from "../types";
 import { useState } from "react";
 
 type WeightsBlockProps = {
 	weights: string[];
-	handleAddParam: (param: Params) => void;
 	handleSetWeight: (value: string) => void;
 };
 
-export default function WeightsBlock({handleAddParam, handleSetWeight, weights }: WeightsBlockProps) {
+export default function WeightsBlock({ handleSetWeight, weights }: WeightsBlockProps) {
 	const { isModalOpen, openModal, closeModal } = useModal();
 	const [isSelected, setIsSelected] = useState<string>("");
 
@@ -46,7 +44,6 @@ export default function WeightsBlock({handleAddParam, handleSetWeight, weights }
 				<AddDataForm
 					type="weights"
 					closeModal={closeModal}
-					handleAddParam={handleAddParam}
 				/>
 			</BaseModal>
 		</>

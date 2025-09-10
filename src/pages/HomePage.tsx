@@ -2,29 +2,42 @@ import AddWorkoutForm from "../components/AddWorkoutForm";
 import { useModal } from "../hooks/useModal";
 import BaseModal from "../components/BaseModal";
 import WorkoutGallery from "../components/WorkoutGallery";
-import { useEffect, useState } from "react";
 import { fetchAllWorkouts } from "../api";
-import type { Workout } from "../types";
+import { useQuery } from "@tanstack/react-query";
 
 function App() {
   const { isModalOpen, openModal, closeModal } = useModal();
-  const [workouts, setWorkouts] = useState<Workout[]>([]);
 
-  useEffect(() => {
-    const handleFetchWorkout = async () => {
-      const token = localStorage.getItem("authToken");
-      if (token) {
-        try {
-          const { data: { workouts } } = await fetchAllWorkouts(token);
-          setWorkouts(workouts);
-        } catch (e) {
-          console.log(e);
-        }
-      }
+  const {
+		isPending,
+		isError,
+		data: workouts,
+		error,
+	} = useQuery({
+		queryKey: ["workouts"],
+		queryFn: handleFetchWorkouts,
+		enabled: !!localStorage.getItem("authToken"),
+	});
+
+  async function handleFetchWorkouts() {
+    const token = localStorage.getItem("authToken");
+    if(!token) return [];
+    try {
+      const { data: { workouts } } = await fetchAllWorkouts(token);
+      return workouts;
+    } catch (e) {
+      console.log(e);
+      throw e;
     }
+  }
 
-    handleFetchWorkout();
-  }, []);
+  if (isPending) {
+		return <span>Loading...</span>;
+	}
+
+	if (isError) {
+		return <span>Error: {error.message}</span>;
+	}
 
   return (
 		<>

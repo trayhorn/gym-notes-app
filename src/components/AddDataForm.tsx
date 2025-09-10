@@ -1,38 +1,48 @@
 import { useState } from "react";
 import { addParam } from "../api";
-import type { Params } from "../types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type AddDataFormProps = {
 	type: "weights" | "reps" | "exercises";
 	closeModal: () => void;
-	handleAddParam: (param: Params) => void;
 };
 
-export default function AddDataForm({ type, closeModal, handleAddParam }: AddDataFormProps) {
+export default function AddDataForm({ type, closeModal }: AddDataFormProps) {
+	const queryClient = useQueryClient();
+	const mutation = useMutation({
+		mutationFn: ({
+			token,
+			data,
+		}: {
+			token: string;
+			data: { type: string; value: string };
+			}) => addParam(token, data),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["params"] });
+		}
+	});
+
 	const [value, setValue] = useState("");
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setValue(e.target.value);
 	};
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+	const handleAddParam = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		const token = localStorage.getItem("authToken");
-		if (token) {
-			try {
-				const { data } = await addParam(token, { type, value });
-				setValue("");
-				handleAddParam(data);
-				closeModal();
-			} catch (e) {
-				console.log(e);
-			}
+		if (!token) {
+			alert("No auth token found");
+			return;
 		}
+
+		mutation.mutate({ token, data: { type, value } });
+		closeModal();
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="flex justify-between mt-5">
+		<form onSubmit={handleAddParam} className="flex justify-between mt-5">
 			<input type="text" name="value" value={value} onChange={handleChange} />
 			<button className="btn" type="submit">
 				Add

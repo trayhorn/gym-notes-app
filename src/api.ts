@@ -64,6 +64,15 @@ export const addWorkout = (token: string, data: { date: string; exercises: { nam
 	});
 }
 
+export const deleteWorkout = (token: string, data: { id: string }): Promise<AxiosResponse<{ message: string }>> => {
+	return axios.delete(`/workouts/delete`, {
+		data,
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+}
+
 
 // Params API
 

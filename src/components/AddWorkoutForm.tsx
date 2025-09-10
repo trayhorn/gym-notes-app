@@ -1,9 +1,9 @@
 import ExerciseBlock from "./ExerciseBlock";
 import RepsBlock from "./RepsBlock";
 import WeightsBlock from "./WeightsBlock";
-import { useState, useEffect } from "react";
-import type { Params } from "../types";
+import { useState } from "react";
 import { fetchAllParams, addWorkout } from "../api";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 type setType = {
   name: string;
@@ -16,7 +16,37 @@ type AddWorkoutFormProps = {
 }
 
 export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
-  const [params, setParams] = useState<Params | null>(null);
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: ({
+      token, data
+    }: {
+    token: string;
+    data: { date: string; exercises: setType[] };
+    }) => addWorkout(token, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["workouts"] });
+    }
+  });
+
+  const { isPending, isError, data: params, error } = useQuery({
+		queryKey: ["params"],
+		queryFn: handleFetchParams,
+	});
+
+  async function handleFetchParams() {
+    const token = localStorage.getItem("authToken");
+    if (!token) return [];
+    try {
+      const { data: { params } } = await fetchAllParams(token);
+      return params[0];
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
+  }
+
   const [set, setSet] = useState<setType>({
     name: "",
     reps: "",
@@ -38,10 +68,6 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
     setSet((prev) => ({ ...prev, weight: value }));
   }
 
-  const handleAddParam = (param: Params) => {
-    setParams(param);
-  };
-
   const handleAddSet = () => {
     setTraining((prev) => ([...prev, set]));
     setSet({ name: "", reps: "", weight: "" });
@@ -49,37 +75,25 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
 
   const handleAddTraining = async () => {
     const token = localStorage.getItem("authToken");
-    if (token) {
-      if (!date) {
-        alert("Please select a date");
-        return;
-      }
-      try {
-        await addWorkout(token, {
-          date,
-          exercises: training,
-        });
-        closeModal();
-      } catch (e) {
-        console.log(e);
-      }
+    if (!token) {
+			alert("No auth token found");
+			return;
+		}
+    if (!date) {
+      alert("Please select a date");
+      return;
     }
+    mutation.mutate({ token, data: { date, exercises: training } });
+    closeModal();
   }
 
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      fetchAllParams(token)
-        .then(({ data: {params} }) => {
-          setParams(params[0]);
-        })
-				.catch((e) => console.log(e));
-    }
-  }, []);
+  if (isPending) {
+		return <span>Loading...</span>;
+	}
 
-  if(!params) {
-    return <div>Loading...</div>;
-  }
+	if (isError) {
+		return <span>Error: {error.message}</span>;
+	}
 
   return (
 		<div>
@@ -92,17 +106,14 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
 				onChange={(e) => setDate(e.target.value)}
 			/>
 			<ExerciseBlock
-				handleAddParam={handleAddParam}
 				handleSetName={handleSetName}
 				exercises={params?.exercises}
 			/>
 			<RepsBlock
-				handleAddParam={handleAddParam}
 				handleSetReps={handleSetReps}
 				reps={params?.reps}
 			/>
 			<WeightsBlock
-				handleAddParam={handleAddParam}
 				handleSetWeight={handleSetWeight}
 				weights={params?.weights}
 			/>

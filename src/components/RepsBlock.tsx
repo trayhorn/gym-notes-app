@@ -1,16 +1,14 @@
 import AddDataForm from "./AddDataForm";
 import { useModal } from "../hooks/useModal";
 import BaseModal from "./BaseModal";
-import type { Params } from "../types";
 import { useState } from "react";
 
 type RepsBlockProps = {
 	reps: string[];
-	handleAddParam: (param: Params) => void;
 	handleSetReps: (value: string) => void;
 };
 
-export default function RepsBlock({handleAddParam, handleSetReps, reps }: RepsBlockProps) {
+export default function RepsBlock({ handleSetReps, reps }: RepsBlockProps) {
 	const { isModalOpen, openModal, closeModal } = useModal();
 	const [isSelected, setIsSelected] = useState<string>("");
 
@@ -45,7 +43,6 @@ export default function RepsBlock({handleAddParam, handleSetReps, reps }: RepsBl
 				<AddDataForm
 					type="reps"
 					closeModal={closeModal}
-					handleAddParam={handleAddParam}
 				/>
 			</BaseModal>
 		</>

@@ -15,21 +15,9 @@ function App() {
 		error,
 	} = useQuery({
 		queryKey: ["workouts"],
-		queryFn: handleFetchWorkouts,
+		queryFn: fetchAllWorkouts,
 		enabled: !!localStorage.getItem("authToken"),
 	});
-
-  async function handleFetchWorkouts() {
-    const token = localStorage.getItem("authToken");
-    if(!token) return [];
-    try {
-      const { data: { workouts } } = await fetchAllWorkouts();
-      return workouts;
-    } catch (e) {
-      console.log(e);
-      throw e;
-    }
-  }
 
   if (isPending) {
 		return <span>Loading...</span>;

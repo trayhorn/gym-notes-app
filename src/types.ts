@@ -1,11 +1,8 @@
-export type authResponse = {
-	token: string;
-	username: string;
+export type setType = {
+	name: string;
+	reps: string;
+	weight: string;
 };
-
-export type authCurrentResponse = {
-	username: string;
-}
 
 
 export type Exercise = {

@@ -1,15 +1,9 @@
 import { useState } from "react";
 import { fetchAllParams, addWorkout } from "../api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import type { addWorkoutData } from "../types";
+import type { addWorkoutData, setType } from "../types";
 import ParamBlock from "./ParamBlock";
 
-
-type setType = {
-  name: string;
-  reps: string;
-  weight: string;
-}
 
 type AddWorkoutFormProps = {
   closeModal: () => void;

@@ -1,7 +1,6 @@
 import { Formik, Field, Form } from "formik";
 import { useNavigate } from "react-router";
 import type { AxiosResponse } from "axios";
-import type { authResponse } from "../types";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
@@ -9,7 +8,7 @@ type AuthFormProps = {
 	submitAction: (values: {
 		username: string;
 		password: string;
-	}) => Promise<AxiosResponse<authResponse>>;
+	}) => Promise<AxiosResponse<string>>;
 };
 
 export default function AuthForm({ submitAction }: AuthFormProps) {

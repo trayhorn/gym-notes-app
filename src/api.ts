@@ -1,11 +1,8 @@
 import axios from "axios";
-// import type { AxiosResponse } from "axios";
-// import type {
-// 	authResponse,
-// 	authCurrentResponse,
-// 	Workout,
-// 	Params,
-// } from "./types";
+import type {
+	Workout,
+	Params,
+} from "./types";
 
 import type { addWorkoutData } from "./types";
 
@@ -25,7 +22,7 @@ const unsetAuthHeader = () => {
 export const registerUser = async (data: {
 	username: string;
 	password: string;
-}) => {
+}): Promise<string> => {
 	const { data: response } = await axios.post("/auth/register", data);
 	if (response.token) {
     localStorage.setItem("authToken", response.token);
@@ -38,11 +35,10 @@ export const registerUser = async (data: {
 export const loginUser = async (data: {
 	username: string;
 	password: string;
-}) => {
+}): Promise<string> => {
 	const { data: response } = await axios.post("/auth/login", data);
-	console.log(response);
 	if (response.token) {
-    localStorage.setItem("authToken", response.token);
+		localStorage.setItem("authToken", response.token);
 		setAuthHeader(response.token);
 	}
 
@@ -59,29 +55,29 @@ export const logoutUser = async () => {
 export const fetchCurrentUser = async () => {
 	setAuthHeader(localStorage.getItem("authToken")!);
 
-	return axios.get("/auth/current");
+	const { data } = await axios.get("/auth/current");
+	return data.username;
 };
 
 // Workouts API
 
-export const fetchAllWorkouts = () => {
-	return axios.get("/workouts/");
+export const fetchAllWorkouts = async (): Promise<Workout[]> => {
+	const { data } = await axios.get("/workouts/");
+	return data.workouts;
 }
 
-
-
-export const addWorkout = ( data: addWorkoutData) => {
+export const addWorkout = ( data: addWorkoutData): Promise<{message: string}> => {
 	return axios.post("/workouts/add", data);
 }
 
-export const deleteWorkout = ( data: { id: string }) => {
+export const deleteWorkout = ( data: { id: string }): Promise<{message: string}> => {
 	return axios.delete(`/workouts/delete`, { data });
 }
 
 
 // Params API
 
-export const fetchAllParams = async () => {
+export const fetchAllParams = async (): Promise<Params> => {
 	const { data } = await axios.get("/params/");
 	return data.params;
 }

@@ -8,17 +8,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [user, setUser] = useState<string | null>(null);
 
 	useEffect(() => {
-		const token = localStorage.getItem("authToken");
-		if (!token) return;
-
-		fetchCurrentUser()
-			.then(({ data }) => {
-				setUser(data.username);
-			})
-			.catch(() => {
-				localStorage.removeItem("authToken");
+		const handleFetchCurrentUser = async () => {
+			try {
+				const username = await fetchCurrentUser();
+				setUser(username);
+			} catch(e) {
+				console.log(e);
 				setUser(null);
-			});
+			}
+		};
+		handleFetchCurrentUser();
 	}, []);
 
 	const login = (username: string) => {

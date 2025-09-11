@@ -3,27 +3,26 @@ import { useModal } from "../hooks/useModal";
 import AddDataForm from "./AddDataForm";
 import { useState } from "react";
 
-type ExerciseBlockProps = {
-	exercises: string[];
-	handleSetName: (value: string) => void;
+type ParamBlockProps = {
+  name: "exercises" | "reps" | "weights";
+  paramList: string[];
+  handleSetParam: (value: string) => void;
 };
 
-export default function ExerciseBlock({ handleSetName, exercises }: ExerciseBlockProps) {
+export default function ParamBlock({ name, handleSetParam, paramList }: ParamBlockProps) {
 	const { isModalOpen, openModal, closeModal } = useModal();
 	const [isSelected, setIsSelected] = useState<string>("");
 
 	const handleBtnClick = (value: string) => {
-		handleSetName(value);
+		handleSetParam(value);
 		setIsSelected(value);
-	}
+	};
 
 	return (
 		<>
-			<h3 className="text-center text-[20px] font-bold mt-sm mb-sm">
-				Exercises
-			</h3>
+			<h3 className="text-center text-[20px] font-bold mt-sm mb-sm">{name}</h3>
 			<ul className="blockList">
-				{exercises.map((item: string) => {
+				{paramList.map((item: string) => {
 					return (
 						<li key={item}>
 							<button
@@ -42,10 +41,7 @@ export default function ExerciseBlock({ handleSetName, exercises }: ExerciseBloc
 				</li>
 			</ul>
 			<BaseModal isOpen={isModalOpen} onRequestClose={closeModal}>
-				<AddDataForm
-					type="exercises"
-					closeModal={closeModal}
-				/>
+				<AddDataForm type={name} closeModal={closeModal} />
 			</BaseModal>
 		</>
 	);

@@ -1,10 +1,9 @@
-import ExerciseBlock from "./ExerciseBlock";
-import RepsBlock from "./RepsBlock";
-import WeightsBlock from "./WeightsBlock";
 import { useState } from "react";
 import { fetchAllParams, addWorkout } from "../api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { addWorkoutData } from "../types";
+import ParamBlock from "./ParamBlock";
+
 
 type setType = {
   name: string;
@@ -26,21 +25,10 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
     }
   });
 
-  const { isPending, isError, data: params, error } = useQuery({
+  const {isPending, isError, data: params, error} = useQuery({
 		queryKey: ["params"],
-		queryFn: handleFetchParams,
+		queryFn: fetchAllParams,
 	});
-
-  async function handleFetchParams() {
-    const token = localStorage.getItem("authToken");
-    if (!token) return [];
-    try {
-      return await fetchAllParams();
-    } catch (e) {
-      console.log(e);
-      throw e;
-    }
-  }
 
   const [set, setSet] = useState<setType>({
     name: "",
@@ -100,18 +88,22 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
 				value={date}
 				onChange={(e) => setDate(e.target.value)}
 			/>
-			<ExerciseBlock
-				handleSetName={handleSetName}
-				exercises={params?.exercises}
+			<ParamBlock
+				name="exercises"
+				handleSetParam={handleSetName}
+				paramList={params?.exercises}
 			/>
-			<RepsBlock
-				handleSetReps={handleSetReps}
-				reps={params?.reps}
+			<ParamBlock
+				name="reps"
+				handleSetParam={handleSetReps}
+				paramList={params?.reps}
 			/>
-			<WeightsBlock
-				handleSetWeight={handleSetWeight}
-				weights={params?.weights}
+			<ParamBlock
+				name="weights"
+				handleSetParam={handleSetWeight}
+				paramList={params?.weights}
 			/>
+
 			<button
 				className="btn mt-md bg-primary text-text-secondary"
 				onClick={handleAddSet}
@@ -138,8 +130,8 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
 
 			<button
 				className="block btn mt-md bg-primary text-text-secondary"
-        onClick={handleAddTraining}
-        disabled={training.length === 0}
+				onClick={handleAddTraining}
+				disabled={training.length === 0}
 			>
 				Add training
 			</button>

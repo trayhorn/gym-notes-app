@@ -9,7 +9,7 @@ import { useContext } from "react";
 
 
 function App() {
-	const { isAuthenticated } = useContext(AuthContext);
+	const { isAuthenticated } = useContext(AuthContext)!;
 
   return (
 		<Routes>

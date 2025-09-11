@@ -25,12 +25,6 @@ export default function AddDataForm({ type, closeModal }: AddDataFormProps) {
 	const handleAddParam = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const token = localStorage.getItem("authToken");
-		if (!token) {
-			alert("No auth token found");
-			return;
-		}
-
 		mutation.mutate({ type, value });
 		closeModal();
 	};

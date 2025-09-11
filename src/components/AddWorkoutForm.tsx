@@ -57,11 +57,6 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
   }
 
   const handleAddTraining = async () => {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-			alert("No auth token found");
-			return;
-		}
     if (!date) {
       alert("Please select a date");
       return;
@@ -89,16 +84,19 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
 				onChange={(e) => setDate(e.target.value)}
 			/>
 			<ParamBlock
+				selectedParam={set.name}
 				name="exercises"
 				handleSetParam={handleSetName}
 				paramList={params?.exercises}
 			/>
 			<ParamBlock
+				selectedParam={set.reps}
 				name="reps"
 				handleSetParam={handleSetReps}
 				paramList={params?.reps}
 			/>
 			<ParamBlock
+				selectedParam={set.weight}
 				name="weights"
 				handleSetParam={handleSetWeight}
 				paramList={params?.weights}

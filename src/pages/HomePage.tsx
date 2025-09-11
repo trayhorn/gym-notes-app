@@ -23,7 +23,7 @@ function App() {
     const token = localStorage.getItem("authToken");
     if(!token) return [];
     try {
-      const { data: { workouts } } = await fetchAllWorkouts(token);
+      const { data: { workouts } } = await fetchAllWorkouts();
       return workouts;
     } catch (e) {
       console.log(e);

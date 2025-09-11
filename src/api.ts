@@ -1,93 +1,91 @@
 import axios from "axios";
-import type { AxiosResponse } from "axios";
-import type {
-	authResponse,
-	authCurrentResponse,
-	Workout,
-	Params,
-} from "./types";
+// import type { AxiosResponse } from "axios";
+// import type {
+// 	authResponse,
+// 	authCurrentResponse,
+// 	Workout,
+// 	Params,
+// } from "./types";
+
+import type { addWorkoutData } from "./types";
 
 export const BASE_URL = "http://localhost:3000";
 
 axios.defaults.baseURL = BASE_URL;
 
+const setAuthHeader = (token: string) => {
+	axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+};
+const unsetAuthHeader = () => {
+	axios.defaults.headers.common.Authorization = "";
+};
+
 // Auth API
 
-export const registerUser = (data: {
+export const registerUser = async (data: {
 	username: string;
 	password: string;
-}): Promise<AxiosResponse<authResponse>> => {
-	return axios.post("/auth/register", data);
+}) => {
+	const { data: response } = await axios.post("/auth/register", data);
+	if (response.token) {
+    localStorage.setItem("authToken", response.token);
+		setAuthHeader(response.token);
+	}
+
+	return response.username;
 };
 
-export const loginUser = (data: {
+export const loginUser = async (data: {
 	username: string;
 	password: string;
-}): Promise<AxiosResponse<authResponse>> => {
-	return axios.post("/auth/login", data);
+}) => {
+	const { data: response } = await axios.post("/auth/login", data);
+	console.log(response);
+	if (response.token) {
+    localStorage.setItem("authToken", response.token);
+		setAuthHeader(response.token);
+	}
+
+	return response.username;
 };
 
 
-export const logoutUser = (token: string): Promise<AxiosResponse<authResponse>> => {
-	return axios.post("/auth/logout", {}, {
-		headers: {
-			Authorization: `Bearer ${token}`
-		}
-	});
+export const logoutUser = async () => {
+	await axios.post("/auth/logout");
+	localStorage.removeItem("authToken");
+	unsetAuthHeader();
 };
 
-export const fetchCurrentUser = (
-	token: string
-): Promise<AxiosResponse<authCurrentResponse>> => {
-	return axios.get("/auth/current", {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
+export const fetchCurrentUser = async () => {
+	setAuthHeader(localStorage.getItem("authToken")!);
+
+	return axios.get("/auth/current");
 };
 
 // Workouts API
 
-export const fetchAllWorkouts = (token: string): Promise<AxiosResponse<{workouts: Workout[]}>> => {
-	return axios.get("/workouts/", {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
+export const fetchAllWorkouts = () => {
+	return axios.get("/workouts/");
 }
 
-export const addWorkout = (token: string, data: { date: string; exercises: { name: string; reps: string; weight: string }[] }): Promise<AxiosResponse<Workout>> => {
-	return axios.post("/workouts/add", data, {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
+
+
+export const addWorkout = ( data: addWorkoutData) => {
+	return axios.post("/workouts/add", data);
 }
 
-export const deleteWorkout = (token: string, data: { id: string }): Promise<AxiosResponse<{ message: string }>> => {
-	return axios.delete(`/workouts/delete`, {
-		data,
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
+export const deleteWorkout = ( data: { id: string }) => {
+	return axios.delete(`/workouts/delete`, { data });
 }
 
 
 // Params API
 
-export const fetchAllParams = (token: string): Promise<AxiosResponse<{params: Params[]}>> => {
-	return axios.get("/params/", {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
+export const fetchAllParams = async () => {
+	const { data } = await axios.get("/params/");
+	return data.params;
 }
 
-export const addParam = (token: string, data: { type: string; value: string }): Promise<AxiosResponse<Params>> => {
-	return axios.patch("/params/add", data, {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	});
+export const addParam = ( data: { type: string; value: string }) => {
+	return axios.patch("/params/add", data);
 }

@@ -10,13 +10,7 @@ type AddDataFormProps = {
 export default function AddDataForm({ type, closeModal }: AddDataFormProps) {
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
-		mutationFn: ({
-			token,
-			data,
-		}: {
-			token: string;
-			data: { type: string; value: string };
-			}) => addParam(token, data),
+		mutationFn: (data: { type: string; value: string }) => addParam(data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["params"] });
 		}
@@ -37,7 +31,7 @@ export default function AddDataForm({ type, closeModal }: AddDataFormProps) {
 			return;
 		}
 
-		mutation.mutate({ token, data: { type, value } });
+		mutation.mutate({ type, value });
 		closeModal();
 	};
 

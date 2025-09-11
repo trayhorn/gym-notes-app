@@ -5,17 +5,15 @@ import { useContext } from "react";
 
 export default function Header() {
   const navigate = useNavigate();
-  const { token, logout, user } = useContext(AuthContext)!;
+  const { logout, user } = useContext(AuthContext)!;
 
 	const handleLogout = async () => {
-		if (token) {
-			try {
-				await logoutUser(token);
-				logout();
-				navigate("/login");
-			} catch (e) {
-				console.log(e);
-			}
+		try {
+			await logoutUser();
+			logout();
+			navigate("/login");
+		} catch (e) {
+			console.log(e);
 		}
   };
 

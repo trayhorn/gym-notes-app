@@ -9,10 +9,13 @@ type workoutCardProps = {
 export default function WorkoutCard({ workout }: workoutCardProps) {
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
-		mutationFn: ({ token, data }: { token: string; data: { id: string } }) => deleteWorkout(token, data),
+		mutationFn: (data: { id: string }) => deleteWorkout(data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["workouts"] });
-		}
+		},
+		onError: (error) => {
+			alert("Error deleting workout:" + error);
+		},
 	});
 
 	const handleWorkoutDelete = async () => {
@@ -21,7 +24,7 @@ export default function WorkoutCard({ workout }: workoutCardProps) {
 			console.error("No token found");
 			return;
 		}
-		mutation.mutate({ token, data: { id: workout._id } });
+		mutation.mutate({ id: workout._id });
 	}
 
   return (

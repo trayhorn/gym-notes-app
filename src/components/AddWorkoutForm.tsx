@@ -4,6 +4,7 @@ import WeightsBlock from "./WeightsBlock";
 import { useState } from "react";
 import { fetchAllParams, addWorkout } from "../api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { addWorkoutData } from "../types";
 
 type setType = {
   name: string;
@@ -19,12 +20,7 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: ({
-      token, data
-    }: {
-    token: string;
-    data: { date: string; exercises: setType[] };
-    }) => addWorkout(token, data),
+    mutationFn: (data: addWorkoutData) => addWorkout(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["workouts"] });
     }
@@ -39,8 +35,7 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
     const token = localStorage.getItem("authToken");
     if (!token) return [];
     try {
-      const { data: { params } } = await fetchAllParams(token);
-      return params[0];
+      return await fetchAllParams();
     } catch (e) {
       console.log(e);
       throw e;
@@ -83,7 +78,7 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
       alert("Please select a date");
       return;
     }
-    mutation.mutate({ token, data: { date, exercises: training } });
+    mutation.mutate({ date, exercises: training });
     closeModal();
   }
 

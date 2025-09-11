@@ -1,8 +1,6 @@
 export type authResponse = {
 	token: string;
-	user: {
-		username: string;
-	};
+	username: string;
 };
 
 export type authCurrentResponse = {
@@ -28,4 +26,9 @@ export type Params = {
 	exercises: string[];
 	reps: string[];
 	weights: string[];
+};
+
+export type addWorkoutData = {
+	date: string;
+	exercises: { name: string; reps: string; weight: string }[];
 };

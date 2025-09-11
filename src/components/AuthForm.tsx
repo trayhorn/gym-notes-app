@@ -22,8 +22,8 @@ export default function AuthForm({ submitAction }: AuthFormProps) {
 				initialValues={{ username: "", password: "" }}
 				onSubmit={async (values, actions) => {
 					try {
-						const { data: { token, user } } = await submitAction(values);
-						login(token, user.username);
+						const username = await submitAction(values);
+						login(username);
 						actions.resetForm();
 						navigate("/");
 					} catch (error) {

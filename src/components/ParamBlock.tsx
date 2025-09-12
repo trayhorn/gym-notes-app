@@ -1,6 +1,8 @@
 import BaseModal from "./BaseModal";
 import { useModal } from "../hooks/useModal";
 import AddDataForm from "./AddDataForm";
+import { FaPlus } from "react-icons/fa";
+
 
 type ParamBlockProps = {
   selectedParam: string;
@@ -37,9 +39,9 @@ export default function ParamBlock({
 						</li>
 					);
 				})}
-				<li>
-					<button className="btn bg-secondary" onClick={openModal}>
-						Add
+				<li className="flex items-center justify-center">
+					<button className="btn bg-primary" onClick={openModal}>
+						<FaPlus color="#FFFFFF" size={25} />
 					</button>
 				</li>
 			</ul>

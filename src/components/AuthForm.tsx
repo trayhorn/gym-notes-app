@@ -38,7 +38,7 @@ export default function AuthForm({ submitAction }: AuthFormProps) {
 						mutation.mutate(values);
 					}}
 				>
-					<Form className="flex flex-col gap-sm pr-md pl-md">
+					<Form className="flex flex-col gap-sm pr-md pl-md mx-auto md:max-w-[50%]">
 						<Field
 							autoComplete="off"
 							name="username"

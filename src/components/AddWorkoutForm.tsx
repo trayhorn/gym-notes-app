@@ -3,6 +3,7 @@ import { fetchAllParams, addWorkout } from "../api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { addWorkoutData, setType } from "../types";
 import ParamBlock from "./ParamBlock";
+import Loader from "./Loader";
 
 
 type AddWorkoutFormProps = {
@@ -19,7 +20,7 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
     }
   });
 
-  const {isPending, isError, data: params, error} = useQuery({
+  const {isPending, isError, isSuccess, data: params, error} = useQuery({
 		queryKey: ["params"],
 		queryFn: fetchAllParams,
 	});
@@ -59,9 +60,7 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
     closeModal();
   }
 
-  if (isPending) {
-		return <span>Loading...</span>;
-	}
+  if (isPending) return <Loader />;
 
 	if (isError) {
 		return <span>Error: {error.message}</span>;
@@ -69,64 +68,71 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
 
   return (
 		<div>
-			<h3 className="text-center text-[20px] font-bold mt-sm mb-sm">Date</h3>
-			<input
-				type="date"
-				id="date"
-				className="mb-md"
-				value={date}
-				onChange={(e) => setDate(e.target.value)}
-			/>
-			<ParamBlock
-				selectedParam={set.name}
-				name="exercises"
-				handleSetParam={handleSetName}
-				paramList={params?.exercises}
-			/>
-			<ParamBlock
-				selectedParam={set.reps}
-				name="reps"
-				handleSetParam={handleSetReps}
-				paramList={params?.reps}
-			/>
-			<ParamBlock
-				selectedParam={set.weight}
-				name="weights"
-				handleSetParam={handleSetWeight}
-				paramList={params?.weights}
-			/>
+			{isPending && <Loader />}
+			{isSuccess && (
+				<>
+					<h3 className="text-center text-[20px] font-bold mt-sm mb-sm">
+						Date
+					</h3>
+					<input
+						type="date"
+						id="date"
+						className="mb-md"
+						value={date}
+						onChange={(e) => setDate(e.target.value)}
+					/>
+					<ParamBlock
+						selectedParam={set.name}
+						name="exercises"
+						handleSetParam={handleSetName}
+						paramList={params?.exercises}
+					/>
+					<ParamBlock
+						selectedParam={set.reps}
+						name="reps"
+						handleSetParam={handleSetReps}
+						paramList={params?.reps}
+					/>
+					<ParamBlock
+						selectedParam={set.weight}
+						name="weights"
+						handleSetParam={handleSetWeight}
+						paramList={params?.weights}
+					/>
 
-			<button
-				className="btn mt-md bg-primary text-text-secondary"
-				onClick={handleAddSet}
-			>
-				Add Set
-			</button>
+					<button
+						className="btn mt-md bg-primary text-text-secondary"
+						onClick={handleAddSet}
+					>
+						Add Set
+					</button>
 
-			{/* Displaying sets */}
+					{/* Displaying sets */}
 
-			{training.length > 0 && (
-				<ul className="mt-md">
-					{training.map(({ name, reps, weight }) => (
-						<li
-							key={name}
-							className="mb-sm flex gap-2 btn w-fit mt-md cursor-default"
-						>
-							<span>{name}</span>
-							<span>{reps}</span>
-							<span>{weight}</span>
-						</li>
-					))}
-				</ul>
+					{training.length > 0 && (
+						<ul className="mt-md">
+							{training.map(({ name, reps, weight }) => (
+								<li
+									key={name}
+									className="mb-sm flex gap-2 btn w-fit mt-md cursor-default"
+								>
+									<span>{name}</span>
+									<span>{reps}</span>
+									<span>{weight}</span>
+								</li>
+							))}
+						</ul>
+					)}
+
+					<button
+						className="block btn mt-md bg-primary text-text-secondary"
+						onClick={handleAddTraining}
+						disabled={training.length === 0}
+					>
+						Add training
+					</button>
+				</>
 			)}
-
-			<button
-				className="block btn mt-md bg-primary text-text-secondary"
-				onClick={handleAddTraining}
-				disabled={training.length === 0}
-			>
-				Add training
-			</button>
 		</div>
 	);
 }

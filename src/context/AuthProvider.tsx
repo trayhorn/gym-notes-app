@@ -2,23 +2,24 @@ import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import { AuthContext } from "./AuthContext";
 import { fetchCurrentUser } from "../api";
+import { useQuery } from "@tanstack/react-query";
 
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+	const { data: username, error, isLoading } = useQuery({
+		queryKey: ["currentUser"],
+		queryFn: fetchCurrentUser,
+		retry: false,
+	});
 	const [user, setUser] = useState<string | null>(null);
 
 	useEffect(() => {
-		const handleFetchCurrentUser = async () => {
-			try {
-				const username = await fetchCurrentUser();
-				setUser(username);
-			} catch(e) {
-				console.log(e);
-				setUser(null);
-			}
-		};
-		handleFetchCurrentUser();
-	}, []);
+		if (username) {
+			setUser(username);
+		} else if (error) {
+			setUser(null);
+		}
+	}, [username, error]);
 
 	const login = (username: string) => {
 		setUser(username);
@@ -34,6 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				user,
 				login,
 				logout,
+				isLoading,
 				isAuthenticated: !!user,
 			}}
 		>

@@ -6,10 +6,13 @@ import RegisterPage from "./pages/RegisterPage";
 import AuthLayout from "./components/AuthLayout";
 import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
+import Loader from "./components/Loader";
 
 
 function App() {
-	const { isAuthenticated } = useContext(AuthContext)!;
+	const { isAuthenticated, isLoading } = useContext(AuthContext)!;
+
+	if (isLoading) return <Loader />;
 
   return (
 		<Routes>

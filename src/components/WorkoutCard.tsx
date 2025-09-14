@@ -27,9 +27,13 @@ export default function WorkoutCard({ workout }: workoutCardProps) {
 		mutation.mutate({ id: workout._id });
 	}
 
+	const formattedDate = new Date(workout.date).toLocaleDateString("uk-UA");
+
   return (
 		<div className="relative p-4 mb-4 bg-secondary font-roboto">
-			<h2 className="text-[20px] font-bold">{workout.date.split("T")[0]}</h2>
+			<h2 className="text-[20px] font-bold">
+				{formattedDate}
+			</h2>
 			{workout.exercises.map(({ name, reps, weight }: Exercise) => (
 				<div key={name} className="flex gap-2 btn w-fit mt-md cursor-default">
 					<span>{name}</span>

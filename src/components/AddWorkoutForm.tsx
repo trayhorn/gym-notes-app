@@ -47,8 +47,12 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
   }
 
   const handleAddSet = () => {
-    setTraining((prev) => ([...prev, set]));
-    setSet({ name: "", reps: "", weight: "" });
+		if (set.name && set.reps && set.weight) {
+			setTraining((prev) => [...prev, set]);
+			setSet({ name: "", reps: "", weight: "" });
+		} else {
+			alert("Please select all params");
+		}
   }
 
   const handleAddTraining = async () => {
@@ -101,8 +105,9 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
 					/>
 
 					<button
-						className="btn mt-md bg-primary text-text-secondary"
+						className="btn mt-md bg-primary text-text-secondary disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed"
 						onClick={handleAddSet}
+						disabled={!set.name || !set.reps || !set.weight}
 					>
 						Add Set
 					</button>

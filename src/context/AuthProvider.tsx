@@ -6,10 +6,17 @@ import { useQuery } from "@tanstack/react-query";
 
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-	const { data: username, error, isLoading } = useQuery({
+	const {
+		data: username,
+		error,
+		isLoading,
+	} = useQuery({
 		queryKey: ["currentUser"],
 		queryFn: fetchCurrentUser,
 		retry: false,
+		refetchOnWindowFocus: false,
+		refetchOnMount: false,
+		refetchOnReconnect: false,
 	});
 	const [user, setUser] = useState<string | null>(null);
 

@@ -45,7 +45,7 @@ export default function AddDataForm({ type, closeModal }: AddDataFormProps) {
 	return (
 		<form onSubmit={handleAddParam} className="flex justify-between mt-5">
 			<div role="group" className="flex items-center">
-				<input type="text" name="value" value={value} onChange={handleChange} />
+				<input type={type === "weights" ? "number" : "text"} name="value" value={value} onChange={handleChange} />
 				{type === "weights" && (
 					<select onChange={handleUnitChange} name="unit" className="ml-2">
 						<option value="kg">kg</option>

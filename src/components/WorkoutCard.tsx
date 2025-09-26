@@ -30,7 +30,7 @@ export default function WorkoutCard({ workout }: workoutCardProps) {
 	const formattedDate = new Date(workout.date).toLocaleDateString("uk-UA");
 
   return (
-		<div className="relative p-4 mb-4 bg-secondary font-roboto">
+		<div className="h-full relative p-4 bg-secondary font-roboto">
 			<h2 className="text-[20px] font-bold">
 				{formattedDate}
 			</h2>

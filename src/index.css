@@ -72,6 +72,14 @@
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
+
+  --animate-custom-spin: rotation 1s linear infinite;
+  
+  @keyframes rotation {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+  }
 }
 
 @layer components {

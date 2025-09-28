@@ -107,7 +107,7 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
 					<button
 						className="btn mt-md bg-primary text-text-secondary disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed"
 						onClick={handleAddSet}
-						disabled={!set.name || !set.reps || !set.weight}
+						disabled={!set.name || !set.reps}
 					>
 						Add Set
 					</button>

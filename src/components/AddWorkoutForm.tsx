@@ -130,7 +130,7 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
 					)}
 
 					<button
-						className="block btn mt-md bg-primary text-text-secondary"
+						className="block btn mt-md bg-primary text-text-secondary disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed"
 						onClick={handleAddTraining}
 						disabled={training.length === 0}
 					>

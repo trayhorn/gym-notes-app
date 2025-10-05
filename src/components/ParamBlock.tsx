@@ -2,6 +2,7 @@ import BaseModal from "./BaseModal";
 import { useModal } from "../hooks/useModal";
 import AddDataForm from "./AddDataForm";
 import { FaPlus } from "react-icons/fa";
+import { useState } from "react";
 
 
 type ParamBlockProps = {
@@ -17,17 +18,36 @@ export default function ParamBlock({
 	handleSetParam,
 	paramList,
 }: ParamBlockProps) {
-  const { isModalOpen, openModal, closeModal } = useModal();
+	const { isModalOpen, openModal, closeModal } = useModal();
+	const [filterValue, setFilterValue] = useState("");
 
-  const formattedName = name.charAt(0).toUpperCase() + name.slice(1, name.length - 1);
+	const formattedName = name.charAt(0).toUpperCase() + name.slice(1, name.length - 1);
+
+	const filteredParamList = paramList.filter((item) =>
+		item.toLowerCase().includes(filterValue.toLowerCase())
+	);
 
 	return (
 		<>
 			<h3 className="text-center text-[20px] font-bold mt-sm mb-sm">
 				{formattedName}
 			</h3>
+			{name === "exercises" && (
+				<div className="mb-md flex items-center gap-md">
+					<label htmlFor="filter">Filter</label>
+					<input
+						type="text"
+						name="filter"
+						value={filterValue}
+						onChange={(e) => setFilterValue(e.target.value)}
+					/>
+				</div>
+			)}
 			<ul className="blockList">
-				{paramList.map((item: string) => {
+				{name === "exercises" && filteredParamList.length === 0 && (
+					<p className="text-center">No exercises found</p>
+				)}
+				{filteredParamList.map((item: string) => {
 					return (
 						<li key={item}>
 							<button

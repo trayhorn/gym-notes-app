@@ -88,7 +88,7 @@
   }
 
   .blockList {
-    @apply flex gap-sm flex-wrap;
+    @apply flex gap-sm flex-wrap items-center;
   }
 
   .selected {

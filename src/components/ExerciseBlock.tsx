@@ -1,17 +1,18 @@
-import { useState } from "react";
-
 type ExerciseBlockProps = {
 	selectedParam: string;
 	paramList: string[];
 	handleSetParam: (value: string) => void;
+	filterValue: string;
+	handleFilterValue: (value: string) => void;
 };
 
 export default function ExerciseBlock({
 	selectedParam,
 	handleSetParam,
 	paramList,
+	filterValue,
+	handleFilterValue,
 }: ExerciseBlockProps) {
-	const [filterValue, setFilterValue] = useState("");
 
 	const filteredParamList = paramList.filter((item) =>
 		item.toLowerCase().includes(filterValue.toLowerCase())
@@ -24,9 +25,9 @@ export default function ExerciseBlock({
 				<input
 					type="text"
 					name="filter"
-          value={filterValue}
-          autoComplete="off"
-					onChange={(e) => setFilterValue(e.target.value)}
+					value={filterValue}
+					autoComplete="off"
+					onChange={(e) => handleFilterValue(e.target.value)}
 				/>
 			</div>
 			{filteredParamList.length === 0 && (

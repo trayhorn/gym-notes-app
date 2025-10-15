@@ -29,7 +29,13 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
     name: "",
     reps: "",
     weight: "",
-  });
+	});
+
+	const [exerciseFilterValue, setExerciseFilterValue] = useState("");
+
+	const handleExerciseFilterValue = (value: string) => {
+		setExerciseFilterValue(value);
+	}
 
   const [training, setTraining] = useState<setType[]>([]);
   const [date, setDate] = useState<string>("");
@@ -50,6 +56,7 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
 		if (set.name && set.reps && set.weight) {
 			setTraining((prev) => [...prev, set]);
 			setSet({ name: "", reps: "", weight: "" });
+			setExerciseFilterValue("");
 		} else {
 			alert("Please select all params");
 		}
@@ -90,6 +97,8 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
 						name="exercises"
 						handleSetParam={handleSetName}
 						paramList={params?.exercises}
+						exerciseFilterValue={exerciseFilterValue}
+						handleExerciseFilterValue={handleExerciseFilterValue}
 					/>
 					<ParamBlock
 						selectedParam={set.reps}

@@ -10,7 +10,9 @@ type ParamBlockProps = {
   selectedParam: string;
   name: "exercises" | "reps" | "weights";
   paramList: string[];
-  handleSetParam: (value: string) => void;
+	handleSetParam: (value: string) => void;
+	exerciseFilterValue?: string;
+	handleExerciseFilterValue?: (value: string) => void;
 };
 
 export default function ParamBlock({
@@ -18,20 +20,23 @@ export default function ParamBlock({
   name,
 	handleSetParam,
 	paramList,
+	exerciseFilterValue,
+	handleExerciseFilterValue,
 }: ParamBlockProps) {
 	const { isModalOpen, openModal, closeModal } = useModal();
-
 
 	return (
 		<>
 			<h3 className="text-center text-[20px] font-bold mt-sm mb-sm">
 				{formatName(name)}
 			</h3>
-			{name === "exercises" ? (
+			{name === "exercises" && handleExerciseFilterValue ? (
 				<ExerciseBlock
 					selectedParam={selectedParam}
 					handleSetParam={handleSetParam}
 					paramList={paramList}
+					filterValue={exerciseFilterValue || ""}
+					handleFilterValue={handleExerciseFilterValue}
 				/>
 			) : (
 				<ul className="blockList">

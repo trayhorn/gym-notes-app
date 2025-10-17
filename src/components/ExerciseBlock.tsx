@@ -1,9 +1,12 @@
+import { FaPlus } from "react-icons/fa";
+
 type ExerciseBlockProps = {
 	selectedParam: string;
 	paramList: string[];
 	handleSetParam: (value: string) => void;
 	filterValue: string;
 	handleFilterValue: (value: string) => void;
+	openModal: () => void;
 };
 
 export default function ExerciseBlock({
@@ -12,8 +15,8 @@ export default function ExerciseBlock({
 	paramList,
 	filterValue,
 	handleFilterValue,
+	openModal,
 }: ExerciseBlockProps) {
-
 	const filteredParamList = paramList.filter((item) =>
 		item.toLowerCase().includes(filterValue.toLowerCase())
 	);
@@ -44,6 +47,11 @@ export default function ExerciseBlock({
 						</button>
 					</li>
 				))}
+				<li className="flex items-center justify-center">
+					<button className="btn bg-primary" onClick={openModal}>
+						<FaPlus color="#FFFFFF" size={25} />
+					</button>
+				</li>
 			</ul>
 		</>
 	);

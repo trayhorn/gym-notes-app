@@ -1,9 +1,9 @@
 import BaseModal from "./BaseModal";
 import { useModal } from "../hooks/useModal";
 import AddDataForm from "./AddDataForm";
-import { FaPlus } from "react-icons/fa";
 import ExerciseBlock from "./ExerciseBlock";
 import { formatName } from "../utils/formatName";
+import RepWeighsBlock from "./RepWeighsBlock";
 
 
 type ParamBlockProps = {
@@ -37,25 +37,15 @@ export default function ParamBlock({
 					paramList={paramList}
 					filterValue={exerciseFilterValue || ""}
 					handleFilterValue={handleExerciseFilterValue}
+					openModal={openModal}
 				/>
 			) : (
-				<ul className="blockList">
-					{paramList.map((item: string) => (
-						<li key={item}>
-							<button
-								className={`btn ${selectedParam === item ? "selected" : ""}`}
-								onClick={() => handleSetParam(item)}
-							>
-								{item}
-							</button>
-						</li>
-					))}
-					<li className="flex items-center justify-center">
-						<button className="btn bg-primary" onClick={openModal}>
-							<FaPlus color="#FFFFFF" size={25} />
-						</button>
-					</li>
-				</ul>
+				<RepWeighsBlock
+					selectedParam={selectedParam}
+					paramList={paramList}
+					handleSetParam={handleSetParam}
+					openModal={openModal}
+				/>
 			)}
 
 			<BaseModal isOpen={isModalOpen} onRequestClose={closeModal}>

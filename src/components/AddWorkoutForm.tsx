@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { addWorkoutData, setType } from "../types";
 import ParamBlock from "./ParamBlock";
 import Loader from "./Loader";
-
+import { FilterContext } from "../context/FilterContext";
 
 type AddWorkoutFormProps = {
   closeModal: () => void;
@@ -32,10 +32,6 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
 	});
 
 	const [exerciseFilterValue, setExerciseFilterValue] = useState("");
-
-	const handleExerciseFilterValue = (value: string) => {
-		setExerciseFilterValue(value);
-	}
 
   const [training, setTraining] = useState<setType[]>([]);
   const [date, setDate] = useState<string>("");
@@ -92,14 +88,14 @@ export default function AddWorkoutForm({ closeModal }: AddWorkoutFormProps) {
 						value={date}
 						onChange={(e) => setDate(e.target.value)}
 					/>
-					<ParamBlock
-						selectedParam={set.name}
-						name="exercises"
-						handleSetParam={handleSetName}
-						paramList={params?.exercises}
-						exerciseFilterValue={exerciseFilterValue}
-						handleExerciseFilterValue={handleExerciseFilterValue}
-					/>
+					<FilterContext value={{ exerciseFilterValue, setExerciseFilterValue }}>
+						<ParamBlock
+							selectedParam={set.name}
+							name="exercises"
+							handleSetParam={handleSetName}
+							paramList={params?.exercises}
+						/>
+					</FilterContext>
 					<ParamBlock
 						selectedParam={set.reps}
 						name="reps"

@@ -2,8 +2,8 @@ import BaseModal from "./BaseModal";
 import { useModal } from "../hooks/useModal";
 import AddDataForm from "./AddDataForm";
 import ExerciseBlock from "./ExerciseBlock";
-import { formatName } from "../utils/formatName";
 import RepWeighsBlock from "./RepWeighsBlock";
+import { formatName } from "../utils/formatName";
 
 
 type ParamBlockProps = {
@@ -11,8 +11,6 @@ type ParamBlockProps = {
   name: "exercises" | "reps" | "weights";
   paramList: string[];
 	handleSetParam: (value: string) => void;
-	exerciseFilterValue?: string;
-	handleExerciseFilterValue?: (value: string) => void;
 };
 
 export default function ParamBlock({
@@ -20,8 +18,6 @@ export default function ParamBlock({
   name,
 	handleSetParam,
 	paramList,
-	exerciseFilterValue,
-	handleExerciseFilterValue,
 }: ParamBlockProps) {
 	const { isModalOpen, openModal, closeModal } = useModal();
 
@@ -30,13 +26,11 @@ export default function ParamBlock({
 			<h3 className="text-center text-[20px] font-bold mt-sm mb-sm">
 				{formatName(name)}
 			</h3>
-			{name === "exercises" && handleExerciseFilterValue ? (
+			{name === "exercises" ? (
 				<ExerciseBlock
 					selectedParam={selectedParam}
 					handleSetParam={handleSetParam}
 					paramList={paramList}
-					filterValue={exerciseFilterValue || ""}
-					handleFilterValue={handleExerciseFilterValue}
 					openModal={openModal}
 				/>
 			) : (

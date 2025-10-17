@@ -1,11 +1,11 @@
 import { FaPlus } from "react-icons/fa";
+import { useContext } from "react";
+import { FilterContext } from "../context/FilterContext";
 
 type ExerciseBlockProps = {
 	selectedParam: string;
 	paramList: string[];
 	handleSetParam: (value: string) => void;
-	filterValue: string;
-	handleFilterValue: (value: string) => void;
 	openModal: () => void;
 };
 
@@ -13,12 +13,15 @@ export default function ExerciseBlock({
 	selectedParam,
 	handleSetParam,
 	paramList,
-	filterValue,
-	handleFilterValue,
 	openModal,
 }: ExerciseBlockProps) {
+	const {
+		exerciseFilterValue,
+		setExerciseFilterValue
+	} = useContext(FilterContext);
+
 	const filteredParamList = paramList.filter((item) =>
-		item.toLowerCase().includes(filterValue.toLowerCase())
+		item.toLowerCase().includes(exerciseFilterValue.toLowerCase())
 	);
 
 	return (
@@ -28,9 +31,9 @@ export default function ExerciseBlock({
 				<input
 					type="text"
 					name="filter"
-					value={filterValue}
+					value={exerciseFilterValue}
 					autoComplete="off"
-					onChange={(e) => handleFilterValue(e.target.value)}
+					onChange={(e) => setExerciseFilterValue(e.target.value)}
 				/>
 			</div>
 			{filteredParamList.length === 0 && (

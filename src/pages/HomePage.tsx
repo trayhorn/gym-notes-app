@@ -1,15 +1,11 @@
-import AddWorkoutForm from "../components/AddWorkoutForm";
-import { useModal } from "../hooks/useModal";
-import BaseModal from "../components/BaseModal";
 import WorkoutGallery from "../components/WorkoutGallery";
 import { fetchAllWorkouts } from "../api";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "../components/Loader";
+import { Link } from "react-router";
 
 function App() {
-  const { isModalOpen, openModal, closeModal } = useModal();
-
-  const {
+	const {
 		isPending,
 		isError,
 		isSuccess,
@@ -21,27 +17,24 @@ function App() {
 		enabled: !!localStorage.getItem("authToken"),
 	});
 
-  if (isPending) return <Loader />;
+	if (isPending) return <Loader />;
 
 	if (isError) {
 		return <span>Error: {error.message}</span>;
 	}
 
-  return (
+	return (
 		<>
 			{isPending && <Loader />}
 			{isError && <span>Something went wrong</span>}
 			{isSuccess && (
 				<>
-					<button
-						className="bg-primary text-text-secondary py-2 px-4 w-full"
-						onClick={openModal}
+					<Link
+						to="/add_workout"
+						className="bg-primary text-text-secondary py-2 px-4 inline-block w-full text-center"
 					>
 						Add Workout
-					</button>
-					<BaseModal isOpen={isModalOpen} onRequestClose={closeModal}>
-						<AddWorkoutForm closeModal={closeModal} />
-					</BaseModal>
+					</Link>
 					<WorkoutGallery workouts={workouts} />
 				</>
 			)}

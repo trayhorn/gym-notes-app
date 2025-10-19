@@ -29,7 +29,7 @@ export default function DeletePopup({ closeModal, workoutId }: DeletePopupProps)
 
 	return (
 		<div className="flex flex-col gap-4">
-			<h2>Are you sure you want to delete this hero?</h2>
+			<h2>Are you sure you want to delete this workout?</h2>
 			<div className="flex justify-center gap-4">
 				<button className="btn bg-error" onClick={handleWorkoutDelete}>
 					Delete

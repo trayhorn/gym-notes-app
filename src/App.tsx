@@ -7,6 +7,8 @@ import AuthLayout from "./components/AuthLayout";
 import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 import Loader from "./components/Loader";
+import AddWorkoutPage from "./pages/AddWorkoutPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 
 function App() {
@@ -17,11 +19,24 @@ function App() {
   return (
 		<Routes>
 			<Route path="/" element={<SharedLayout />}>
-				<Route index element={isAuthenticated ? <HomePage /> : <Navigate to="/login" />} />
+				<Route
+					index
+					element={<ProtectedRoute><HomePage /></ProtectedRoute>}
+				/>
+				<Route
+					path="/add_workout"
+					element={<ProtectedRoute><AddWorkoutPage /></ProtectedRoute>}
+				/>
 			</Route>
 			<Route element={<AuthLayout />}>
-				<Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <LoginPage />} />
-				<Route path="/register" element={isAuthenticated ? <Navigate to="/" /> : <RegisterPage />} />
+				<Route
+					path="/login"
+					element={isAuthenticated ? <Navigate to="/" /> : <LoginPage />}
+				/>
+				<Route
+					path="/register"
+					element={isAuthenticated ? <Navigate to="/" /> : <RegisterPage />}
+				/>
 			</Route>
 		</Routes>
 	);

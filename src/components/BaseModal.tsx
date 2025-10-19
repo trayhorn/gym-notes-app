@@ -3,12 +3,6 @@ import { IoMdClose } from "react-icons/io";
 
 Modal.setAppElement("#root");
 
-const customStyles = {
-	content: {
-		inset: "16px"
-	},
-};
-
 type BaseModalProps = {
   isOpen: boolean;
   onRequestClose: () => void;
@@ -22,10 +16,31 @@ export default function BaseModal({ isOpen, onRequestClose, children }: BaseModa
 			isOpen={isOpen}
 			onRequestClose={onRequestClose}
 			contentLabel="Base modal"
-			style={customStyles}
+			style={{
+				overlay: {
+					position: "fixed",
+					inset: 0,
+					backgroundColor: "rgba(255, 255, 255, 0.75)",
+				},
+				content: {
+					position: "absolute",
+					top: "50%",
+					left: "50%",
+					right: "auto",
+					bottom: "auto",
+					transform: "translate(-50%, -50%)",
+					border: "1px solid #ccc",
+					background: "#fff",
+					overflow: "auto",
+					WebkitOverflowScrolling: "touch",
+					borderRadius: "4px",
+					outline: "none",
+					padding: "20px 40px",
+				},
+			}}
 		>
 			{children}
-			<button className="absolute top-2 right-2" onClick={onRequestClose}>
+			<button className="absolute top-1 right-1" onClick={onRequestClose}>
 				<IoMdClose size={24} />
 			</button>
 		</Modal>

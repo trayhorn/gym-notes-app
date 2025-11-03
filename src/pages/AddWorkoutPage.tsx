@@ -6,8 +6,10 @@ import ParamBlock from "../components/ParamBlock";
 import Loader from "../components/Loader";
 import { FilterContext } from "../context/FilterContext";
 import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 export default function AddWorkoutPage() {
+	const natigate = useNavigate();
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation({
@@ -67,6 +69,7 @@ export default function AddWorkoutPage() {
 			return;
 		}
 		mutation.mutate({ date, exercises: training });
+		natigate("/");
 	};
 
 	if (isPending) return <Loader />;

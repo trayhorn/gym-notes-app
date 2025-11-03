@@ -1,8 +1,14 @@
+import Chart from "../components/Chart";
+import { useLocation } from "react-router";
+
 export default function AnalyticsPage() {
+  const location = useLocation();
+
+  localStorage.setItem("lastVisitedPage", location.pathname);
+
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Analytics Page</h1>
-      <p>This is where analytics data will be displayed.</p>
+      <Chart />
     </div>
   );
 }

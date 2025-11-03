@@ -1,5 +1,7 @@
 import { Routes, Route, Navigate } from "react-router";
 import HomePage from "./pages/HomePage";
+import AddWorkoutPage from "./pages/AddWorkoutPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
 import SharedLayout from "./components/SharedLayout";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -7,7 +9,6 @@ import AuthLayout from "./components/AuthLayout";
 import { AuthContext } from "./context/AuthContext";
 import { useContext } from "react";
 import Loader from "./components/Loader";
-import AddWorkoutPage from "./pages/AddWorkoutPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 
@@ -34,6 +35,14 @@ function App() {
 					element={
 						<ProtectedRoute>
 							<AddWorkoutPage />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path="/analytics"
+					element={
+						<ProtectedRoute>
+							<AnalyticsPage />
 						</ProtectedRoute>
 					}
 				/>

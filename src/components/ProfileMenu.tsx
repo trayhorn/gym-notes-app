@@ -1,6 +1,6 @@
 import { CgProfile } from "react-icons/cg";
 import { logoutUser } from "../api";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import { useState } from "react";
@@ -26,11 +26,21 @@ export default function ProfileMenu() {
 			<CgProfile
 				size={40}
 				onClick={() => setIsMenuOpen(!isMenuOpen)}
-				className="self-end"
+				className="self-end cursor-pointer"
 			/>
 			{isMenuOpen && (
 				<ul className="relative bg-white border p-2 mt-2 rounded shadow-md z-10">
 					<li className="pt-sm pb-sm border-b">{user}</li>
+					<li className="pt-sm pb-sm border-b text-center">
+						<Link to="/" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+							Home
+						</Link>
+					</li>
+					<li className="pt-sm pb-sm border-b text-center">
+						<Link to="/analytics" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+							Analytics
+						</Link>
+					</li>
 					<li className="pt-sm pb-sm">
 						<button className="w-full" onClick={handleLogout}>
 							Logout

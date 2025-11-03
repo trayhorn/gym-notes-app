@@ -9,5 +9,3 @@ export const FilterContext = createContext<FilterContextType>({
 	exerciseFilterValue: "",
 	setExerciseFilterValue: () => {},
 });
-
-

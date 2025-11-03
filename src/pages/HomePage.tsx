@@ -2,7 +2,7 @@ import WorkoutGallery from "../components/WorkoutGallery";
 import { fetchAllWorkouts } from "../api";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "../components/Loader";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 function App() {
 	const {
@@ -16,6 +16,10 @@ function App() {
 		queryFn: fetchAllWorkouts,
 		enabled: !!localStorage.getItem("authToken"),
 	});
+
+	const location = useLocation();
+
+	localStorage.setItem("lastVisitedPage", location.pathname);
 
 	if (isPending) return <Loader />;
 

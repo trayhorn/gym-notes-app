@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { fetchAllParams, addWorkout } from "../api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { addWorkoutData, setType } from "../types";
@@ -6,11 +6,14 @@ import ParamBlock from "../components/ParamBlock";
 import Loader from "../components/Loader";
 import { FilterContext } from "../context/FilterContext";
 import { Link } from "react-router";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 
 export default function AddWorkoutPage() {
-	const natigate = useNavigate();
+	const location = useLocation();
+	const navigate = useNavigate();
 	const queryClient = useQueryClient();
+
+	localStorage.setItem("lastVisitedPage", location.pathname);
 
 	const mutation = useMutation({
 		mutationFn: (data: addWorkoutData) => addWorkout(data),
@@ -38,7 +41,10 @@ export default function AddWorkoutPage() {
 
 	const [exerciseFilterValue, setExerciseFilterValue] = useState("");
 
-	const [training, setTraining] = useState<setType[]>([]);
+	const [training, setTraining] = useState<setType[]>(() => {
+		const savedTraining = localStorage.getItem("training");
+		return savedTraining ? JSON.parse(savedTraining) : [];
+	});
 	const [date, setDate] = useState<string>("");
 
 	const handleSetName = (value: string) => {
@@ -56,6 +62,7 @@ export default function AddWorkoutPage() {
 	const handleAddSet = () => {
 		if (set.name && set.reps && set.weight) {
 			setTraining((prev) => [...prev, set]);
+			localStorage.setItem("training", JSON.stringify(training));
 			setSet({ name: "", reps: "", weight: "" });
 			setExerciseFilterValue("");
 		} else {
@@ -69,8 +76,13 @@ export default function AddWorkoutPage() {
 			return;
 		}
 		mutation.mutate({ date, exercises: training });
-		natigate("/");
+		localStorage.removeItem("training");
+		navigate("/");
 	};
+
+	useEffect(() => {
+		localStorage.setItem("training", JSON.stringify(training));
+	}, [training]);
 
 	if (isPending) return <Loader />;
 

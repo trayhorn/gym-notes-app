@@ -14,6 +14,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 function App() {
 	const { isAuthenticated, isLoading } = useContext(AuthContext)!;
 
+	const lastVisitedPage = localStorage.getItem("lastVisitedPage") || "/";
+
 	if (isLoading) return <Loader />;
 
   return (
@@ -21,21 +23,37 @@ function App() {
 			<Route path="/" element={<SharedLayout />}>
 				<Route
 					index
-					element={<ProtectedRoute><HomePage /></ProtectedRoute>}
+					element={
+						<ProtectedRoute>
+							<HomePage />
+						</ProtectedRoute>
+					}
 				/>
 				<Route
 					path="/add_workout"
-					element={<ProtectedRoute><AddWorkoutPage /></ProtectedRoute>}
+					element={
+						<ProtectedRoute>
+							<AddWorkoutPage />
+						</ProtectedRoute>
+					}
 				/>
 			</Route>
 			<Route element={<AuthLayout />}>
 				<Route
 					path="/login"
-					element={isAuthenticated ? <Navigate to="/" /> : <LoginPage />}
+					element={
+						isAuthenticated ? <Navigate to={lastVisitedPage} /> : <LoginPage />
+					}
 				/>
 				<Route
 					path="/register"
-					element={isAuthenticated ? <Navigate to="/" /> : <RegisterPage />}
+					element={
+						isAuthenticated ? (
+							<Navigate to={lastVisitedPage} />
+						) : (
+							<RegisterPage />
+						)
+					}
 				/>
 			</Route>
 		</Routes>

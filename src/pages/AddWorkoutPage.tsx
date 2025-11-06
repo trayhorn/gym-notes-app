@@ -80,6 +80,11 @@ export default function AddWorkoutPage() {
 		navigate("/");
 	};
 
+	const handleClearTraining = () => {
+		setTraining([]);
+		localStorage.removeItem("training");
+	}
+
 	useEffect(() => {
 		localStorage.setItem("training", JSON.stringify(training));
 	}, [training]);
@@ -161,13 +166,23 @@ export default function AddWorkoutPage() {
 							</ul>
 						)}
 
-						<button
-							className="block btn mt-md bg-primary text-text-secondary disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed"
-							onClick={handleAddTraining}
-							disabled={training.length === 0}
-						>
-							Add training
-						</button>
+						<div>
+							<button
+								className="btn mt-md mr-sm bg-primary text-text-secondary disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed"
+								onClick={handleAddTraining}
+								disabled={training.length === 0}
+							>
+								Add training
+							</button>
+							{training.length > 0 && (
+								<button
+									className="btn mt-md bg-primary text-text-secondary disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed"
+									onClick={handleClearTraining}
+								>
+									Clear
+								</button>
+							)}
+						</div>
 					</>
 				)}
 			</div>

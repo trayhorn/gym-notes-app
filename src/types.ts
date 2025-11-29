@@ -9,6 +9,7 @@ export type Exercise = {
 	name: string;
 	reps: string;
 	weight: string;
+	supersetGroup?: number;
 };
 
 export type Workout = {

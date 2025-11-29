@@ -7,6 +7,7 @@ import Loader from "../components/Loader";
 import { FilterContext } from "../context/FilterContext";
 import { Link } from "react-router";
 import { useNavigate, useLocation } from "react-router";
+import SetList from "../components/SetList";
 
 export default function AddWorkoutPage() {
 	const location = useLocation();
@@ -148,22 +149,16 @@ export default function AddWorkoutPage() {
 						>
 							Add Set
 						</button>
+						{/* <button 
+							className="btn mt-md bg-primary text-text-secondary ml-sm disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed"
+						>
+							Superset
+						</button> */}
 
 						{/* Displaying sets */}
 
 						{training.length > 0 && (
-							<ul className="mt-md">
-								{training.map(({ name, reps, weight }) => (
-									<li
-										key={name}
-										className="mb-sm flex gap-2 btn w-fit mt-md cursor-default"
-									>
-										<span>{name}</span>
-										<span>{reps}</span>
-										<span>{weight}</span>
-									</li>
-								))}
-							</ul>
+							<SetList training={training} />
 						)}
 
 						<div>

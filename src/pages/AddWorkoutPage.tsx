@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { fetchAllParams, addWorkout } from "../api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import type { addWorkoutData, setType } from "../types";
+import type { addWorkoutData, Exercise, setType } from "../types";
 import ParamBlock from "../components/ParamBlock";
 import Loader from "../components/Loader";
 import { FilterContext } from "../context/FilterContext";
 import { Link } from "react-router";
 import { useNavigate, useLocation } from "react-router";
 import SetList from "../components/SetList";
+
 
 export default function AddWorkoutPage() {
 	const location = useLocation();
@@ -69,6 +70,16 @@ export default function AddWorkoutPage() {
 		} else {
 			alert("Please select all params");
 		}
+	};
+
+	const handleAddSuperset = (exercise: Exercise, supersetId: string) => {
+		setTraining(prev => 
+			prev.map(el => 
+				el.name === exercise.name 
+					? { ...el, supersetGroup: supersetId }
+					: el
+			)
+		);
 	};
 
 	const handleAddTraining = async () => {
@@ -149,16 +160,11 @@ export default function AddWorkoutPage() {
 						>
 							Add Set
 						</button>
-						{/* <button 
-							className="btn mt-md bg-primary text-text-secondary ml-sm disabled:bg-gray-400 disabled:text-gray-200 disabled:cursor-not-allowed"
-						>
-							Superset
-						</button> */}
 
 						{/* Displaying sets */}
 
 						{training.length > 0 && (
-							<SetList training={training} />
+							<SetList training={training} handleAddSuperset={handleAddSuperset} />
 						)}
 
 						<div>

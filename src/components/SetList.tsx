@@ -11,6 +11,8 @@ type SetListProps = {
 
 export default function SetList({training, handleAddSuperset}: SetListProps) {
     const [isDragging, setIsDragging] = useState(false);
+    const [isMouseMoveActive, setIsMouseMoveActive] = useState(false);
+    const [isMouseUpActive, setIsMouseUpActive] = useState(false);
 
     const ulElRef = useRef<HTMLUListElement>(null);
     const btnElRef = useRef<HTMLLIElement>(null);
@@ -60,7 +62,6 @@ export default function SetList({training, handleAddSuperset}: SetListProps) {
             placeholder.style.lineHeight = '0';
             placeholder.dataset.placeholderFor = 'dragTarget';
 
-            // insert before original
             btn.parentNode?.insertBefore(placeholder, btn);
 
             // compute top/left relative to container (NOT page)
@@ -83,41 +84,42 @@ export default function SetList({training, handleAddSuperset}: SetListProps) {
 
     function revokeButtonPosition() {
         setIsDragging(false);
-        const container = ulElRef.current;
-        if (!container) return;
+        const ulEl = ulElRef.current;
+        if (!ulEl) return;
         console.log("Revoking button positioning");
 
         // restore positioned elements
-        container.querySelectorAll<HTMLLIElement>('.dragTarget').forEach((btn) => {
-            if (btn.dataset.wasPositioned !== 'true') return;
-            btn.style.position = '';
-            btn.style.top = '';
-            btn.style.left = '';
-            btn.style.width = '';
-            btn.style.margin = '';
-            btn.style.zIndex = '';
-            delete btn.dataset.wasPositioned;
-        });
+        ulEl
+            .querySelectorAll<HTMLUListElement>(".dragTarget")
+            .forEach((btn) => {
+                if (btn.dataset.wasPositioned !== "true") return;
+                btn.style.position = "";
+                btn.style.top = "";
+                btn.style.left = "";
+                btn.style.width = "";
+                btn.style.margin = "";
+                btn.style.zIndex = "";
+                delete btn.dataset.wasPositioned;
+            });
 
         // remove placeholders
-        container.querySelectorAll('.drag-placeholder').forEach(pl => pl.remove());
+        ulEl.querySelectorAll('.drag-placeholder').forEach(pl => pl.remove());
 
-        // restore container position if we changed it
-        if (container.dataset.prevPosition !== undefined) {
-            container.style.position = container.dataset.prevPosition;
-            delete container.dataset.prevPosition;
+        // restore ulEl position if we changed it
+        if (ulEl.dataset.prevPosition !== undefined) {
+            ulEl.style.position = ulEl.dataset.prevPosition;
+            delete ulEl.dataset.prevPosition;
         }
 
-        delete container.dataset.isDragMode;
+        delete ulEl.dataset.isDragMode;
 
         // cleanup listeners if you added them elsewhere
-        
-        container.removeEventListener('mousemove', handleMouseMove);
-        container.removeEventListener('mouseup', handleMouseUp);
+        setIsMouseMoveActive(false);
+        setIsMouseUpActive(false);
     }
 
 
-    function handleMouseDown(e: MouseEvent) {
+    function handleMouseDown(e: React.MouseEvent<HTMLUListElement>) {
         e.preventDefault();
         console.log("Mouse down on item");
 
@@ -132,11 +134,11 @@ export default function SetList({training, handleAddSuperset}: SetListProps) {
         startYRef.current = e.clientY;
         initialTopRef.current = rect.top - (ulRect?.top ?? 0);
 
-        ulElRef.current?.addEventListener('mousemove', handleMouseMove);
-        ulElRef.current?.addEventListener('mouseup', handleMouseUp);
+        setIsMouseMoveActive(true);
+        setIsMouseUpActive(true);
     }
 
-    function handleMouseMove(e: MouseEvent) {
+    function handleMouseMove(e: React.MouseEvent<HTMLUListElement>) {
         e.preventDefault();
         console.log("Mouse move on item");
 
@@ -148,7 +150,7 @@ export default function SetList({training, handleAddSuperset}: SetListProps) {
         startYRef.current = e.clientY;
     }
 
-    function handleMouseUp(e: MouseEvent) {
+    function handleMouseUp(e: React.MouseEvent<HTMLUListElement>) {
         e.preventDefault();
         console.log("Mouse up on item");
 
@@ -190,14 +192,9 @@ export default function SetList({training, handleAddSuperset}: SetListProps) {
 
         btnElRef.current = null;
 
-        ulElRef.current?.removeEventListener('mousemove', handleMouseMove);
-        ulElRef.current?.removeEventListener('mouseup', handleMouseUp);
+        setIsMouseMoveActive(false);
+        setIsMouseUpActive(false);
     }
-
-    // const groupedTraining = function () {
-    //     console.log("Calculating grouped training");
-    //     return groupExercises(training);
-    // }();
 
     const groupedTraining = useMemo(() => {
         console.log("Calculating grouped training");
@@ -208,17 +205,13 @@ export default function SetList({training, handleAddSuperset}: SetListProps) {
     return (
         <div>
             <button onClick={toggleDragging} className="btn mt-md mr-sm bg-primary text-text-secondary">Superset</button>
-            <ul className="relative mt-md" ref={ulElRef} onMouseDown={isDragging ? handleMouseDown : undefined}>
-                {/* {training.map(({ name, reps, weight }) => (
-                    <li
-                        key={name}
-                        className={`${isDragging ? "outline-2 outline-dashed outline-primary" : ""} dragTarget mb-sm flex gap-2 btn w-fit mt-md cursor-default`}
-                    >
-                        <span>{name}</span>
-                        <span>{reps}</span>
-                        <span>{weight}</span>
-                    </li>
-                ))} */}
+            <ul
+                className="relative mt-md"
+                ref={ulElRef}
+                onMouseDown={isDragging ? handleMouseDown : undefined}
+                onMouseMove={isMouseMoveActive ? handleMouseMove : undefined}
+                onMouseUp={isMouseUpActive ? handleMouseUp : undefined}
+            >
                 {groupedTraining.map((item, idx) => {
                     if ("items" in item) {
                         return (

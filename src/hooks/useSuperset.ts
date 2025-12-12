@@ -20,7 +20,7 @@ export function useSuperset(
     setIsDragging((prev) => !prev);
   }
 
-  function handleMouseDown(e: React.MouseEvent<HTMLUListElement>) {
+  function handlePointerDown(e: React.PointerEvent<HTMLUListElement>) {
     if(!isDragging) return;
 
     e.preventDefault();
@@ -41,7 +41,7 @@ export function useSuperset(
     setIsMouseUpActive(true);
   }
 
-  function handleMouseMove(e: React.MouseEvent<HTMLUListElement>) {
+  function handlePointerMove(e: React.PointerEvent<HTMLUListElement>) {
     if(!isMouseMoveActive) return;
 
     e.preventDefault();
@@ -56,7 +56,7 @@ export function useSuperset(
     startYRef.current = e.clientY;
   }
 
-  function handleMouseUp(e: React.MouseEvent<HTMLUListElement>) {
+  function handlePointerUp(e: React.PointerEvent<HTMLUListElement>) {
     if(!isMouseUpActive) return;
 
     e.preventDefault();
@@ -107,9 +107,9 @@ export function useSuperset(
   }
 
   return {
-    handleMouseDown,
-    handleMouseMove,
-    handleMouseUp,
+    handlePointerDown,
+    handlePointerMove,
+    handlePointerUp,
     isDragging,
     toggleDragging
   };

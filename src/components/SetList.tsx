@@ -17,9 +17,9 @@ export default function SetList({training, handleAddSuperset}: SetListProps) {
     const transformTopRef = useRef<number>(0);
 
     const {
-      handleMouseDown,
-      handleMouseMove,
-      handleMouseUp,
+      handlePointerDown,
+      handlePointerMove,
+      handlePointerUp,
       isDragging,
       toggleDragging
     } = useSuperset(
@@ -42,11 +42,11 @@ export default function SetList({training, handleAddSuperset}: SetListProps) {
         <div>
             <button onClick={toggleDragging} className="btn mt-md mr-sm bg-primary text-text-secondary">Superset</button>
             <ul
-                className="relative mt-md"
+                className={`relative mt-md ${isDragging ? "touch-none" : ""}`}
                 ref={ulElRef}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
             >
                 {groupedTraining.map((item, idx) => {
                     if ("items" in item) {

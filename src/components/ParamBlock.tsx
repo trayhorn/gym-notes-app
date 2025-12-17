@@ -22,7 +22,7 @@ export default function ParamBlock({
 	const { isModalOpen, openModal, closeModal } = useModal();
 
 	return (
-		<>
+		<div className="max-h-[500px] overflow-auto">
 			<h3 className="text-center text-[20px] font-bold mt-sm mb-sm">
 				{formatName(name)}
 			</h3>
@@ -45,6 +45,6 @@ export default function ParamBlock({
 			<BaseModal isOpen={isModalOpen} onRequestClose={closeModal}>
 				<AddDataForm type={name} closeModal={closeModal} />
 			</BaseModal>
-		</>
+		</div>
 	);
 }

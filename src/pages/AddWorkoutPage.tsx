@@ -116,7 +116,7 @@ export default function AddWorkoutPage() {
 				Back
 			</Link>
 
-			<div className="p-lg pt-0">
+			<div className="xl:pr-28 xl:pl-28 p-lg pt-0">
 				{isPending && <Loader />}
 				{isSuccess && (
 					<>

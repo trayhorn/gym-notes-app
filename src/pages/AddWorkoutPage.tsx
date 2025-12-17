@@ -15,6 +15,18 @@ export default function AddWorkoutPage() {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 
+	const [exerciseFilterValue, setExerciseFilterValue] = useState("");
+	const [date, setDate] = useState<string>("");
+	const [set, setSet] = useState<setType>({
+		name: "",
+		reps: "",
+		weight: "",
+	});
+	const [training, setTraining] = useState<setType[]>(() => {
+		const savedTraining = localStorage.getItem("training");
+		return savedTraining ? JSON.parse(savedTraining) : [];
+	});
+
 	localStorage.setItem("lastVisitedPage", location.pathname);
 
 	const mutation = useMutation({
@@ -25,41 +37,19 @@ export default function AddWorkoutPage() {
 	});
 
 	const {
-		isPending,
-		isError,
-		isSuccess,
-		data: params,
-		error,
-	} = useQuery({
-		queryKey: ["params"],
-		queryFn: fetchAllParams,
-	});
+    isPending,
+    isError,
+    isSuccess,
+    data: params,
+    error,
+  } = useQuery({
+    queryKey: ["params"],
+    queryFn: fetchAllParams,
+  });
 
-	const [set, setSet] = useState<setType>({
-		name: "",
-		reps: "",
-		weight: "",
-	});
-
-	const [exerciseFilterValue, setExerciseFilterValue] = useState("");
-
-	const [training, setTraining] = useState<setType[]>(() => {
-		const savedTraining = localStorage.getItem("training");
-		return savedTraining ? JSON.parse(savedTraining) : [];
-	});
-	const [date, setDate] = useState<string>("");
-
-	const handleSetName = (value: string) => {
-		setSet((prev) => ({ ...prev, name: value }));
-	};
-
-	const handleSetReps = (value: string) => {
-		setSet((prev) => ({ ...prev, reps: value }));
-	};
-
-	const handleSetWeight = (value: string) => {
-		setSet((prev) => ({ ...prev, weight: value }));
-	};
+	const handleSetProperty = (type: string, value: string) => {
+		setSet((prev) => ({ ...prev, [type]: value }));
+	}
 
 	const handleAddSet = () => {
 		if (set.name && set.reps && set.weight) {
@@ -73,9 +63,9 @@ export default function AddWorkoutPage() {
 	};
 
 	const handleAddSuperset = (exercise: Exercise, supersetId: string) => {
-		setTraining(prev => 
-			prev.map(el => 
-				el.name === exercise.name 
+		setTraining(prev =>
+			prev.map(el =>
+				el.name === exercise.name
 					? { ...el, supersetGroup: supersetId }
 					: el
 			)
@@ -136,20 +126,20 @@ export default function AddWorkoutPage() {
 							<ParamBlock
 								selectedParam={set.name}
 								name="exercises"
-								handleSetParam={handleSetName}
+								handleSetParam={handleSetProperty}
 								paramList={params?.exercises}
 							/>
 						</FilterContext>
 						<ParamBlock
 							selectedParam={set.reps}
 							name="reps"
-							handleSetParam={handleSetReps}
+							handleSetParam={handleSetProperty}
 							paramList={params?.reps}
 						/>
 						<ParamBlock
 							selectedParam={set.weight}
-							name="weights"
-							handleSetParam={handleSetWeight}
+							name="weight"
+							handleSetParam={handleSetProperty}
 							paramList={params?.weights}
 						/>
 

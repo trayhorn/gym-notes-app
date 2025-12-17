@@ -5,8 +5,9 @@ import { FilterContext } from "../context/FilterContext";
 type ExerciseBlockProps = {
 	selectedParam: string;
 	paramList: string[];
-	handleSetParam: (value: string) => void;
+	handleSetParam: (type: string, value: string) => void;
 	openModal: () => void;
+	name: string;
 };
 
 export default function ExerciseBlock({
@@ -14,6 +15,7 @@ export default function ExerciseBlock({
 	handleSetParam,
 	paramList,
 	openModal,
+	name
 }: ExerciseBlockProps) {
 	const {
 		exerciseFilterValue,
@@ -44,7 +46,7 @@ export default function ExerciseBlock({
 					<li key={item}>
 						<button
 							className={`btn ${selectedParam === item ? "selected" : ""}`}
-							onClick={() => handleSetParam(item)}
+							onClick={() => handleSetParam(name, item)}
 						>
 							{item}
 						</button>

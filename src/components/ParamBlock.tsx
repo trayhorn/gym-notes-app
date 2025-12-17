@@ -8,9 +8,9 @@ import { formatName } from "../utils/formatName";
 
 type ParamBlockProps = {
   selectedParam: string;
-  name: "exercises" | "reps" | "weights";
+  name: "exercises" | "reps" | "weight";
   paramList: string[];
-	handleSetParam: (value: string) => void;
+	handleSetParam: (type: string, value: string) => void;
 };
 
 export default function ParamBlock({
@@ -22,7 +22,7 @@ export default function ParamBlock({
 	const { isModalOpen, openModal, closeModal } = useModal();
 
 	return (
-		<div className="max-h-[500px] overflow-auto">
+		<div className="max-h-[500px] overflow-auto p-sm">
 			<h3 className="text-center text-[20px] font-bold mt-sm mb-sm">
 				{formatName(name)}
 			</h3>
@@ -32,6 +32,7 @@ export default function ParamBlock({
 					handleSetParam={handleSetParam}
 					paramList={paramList}
 					openModal={openModal}
+					name='name'
 				/>
 			) : (
 				<RepWeighsBlock
@@ -39,6 +40,7 @@ export default function ParamBlock({
 					paramList={paramList}
 					handleSetParam={handleSetParam}
 					openModal={openModal}
+					name={name}
 				/>
 			)}
 

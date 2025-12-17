@@ -3,7 +3,7 @@ import { addParam } from "../api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type AddDataFormProps = {
-	type: "weights" | "reps" | "exercises";
+	type: "weight" | "reps" | "exercises";
 	closeModal: () => void;
 };
 
@@ -30,7 +30,7 @@ export default function AddDataForm({ type, closeModal }: AddDataFormProps) {
 	const handleAddParam = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		if (type === "weights") {
+		if (type === "weight") {
 			mutation.mutate({
 				type,
 				value: `${value} ${unit}`
@@ -45,8 +45,8 @@ export default function AddDataForm({ type, closeModal }: AddDataFormProps) {
 	return (
 		<form onSubmit={handleAddParam} className="flex justify-between mt-5">
 			<div role="group" className="flex items-center">
-				<input type={type === "weights" ? "number" : "text"} name="value" value={value} onChange={handleChange} />
-				{type === "weights" && (
+				<input type={type === "weight" ? "number" : "text"} name="value" value={value} onChange={handleChange} />
+				{type === "weight" && (
 					<select onChange={handleUnitChange} name="unit" className="ml-2">
 						<option value="kg">kg</option>
 						<option value="lbs">lbs</option>

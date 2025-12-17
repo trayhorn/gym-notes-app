@@ -3,8 +3,10 @@ import { FaPlus } from "react-icons/fa";
 type RepWeighsBlockProps = {
   selectedParam: string;
   paramList: string[];
-  handleSetParam: (value: string) => void;
+  handleSetParam: (type: string, value: string) => void;
   openModal: () => void;
+	name: string;
+
 };
 
 export default function RepWeighsBlock({
@@ -12,6 +14,7 @@ export default function RepWeighsBlock({
   paramList,
   handleSetParam,
   openModal,
+	name
 }: RepWeighsBlockProps) {
 	return (
 		<ul className="blockList">
@@ -19,7 +22,7 @@ export default function RepWeighsBlock({
 				<li key={item}>
 					<button
 						className={`btn ${selectedParam === item ? "selected" : ""}`}
-						onClick={() => handleSetParam(item)}
+						onClick={() => handleSetParam(name, item)}
 					>
 						{item}
 					</button>

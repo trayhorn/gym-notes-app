@@ -5,9 +5,9 @@ import { FilterContext } from "../context/FilterContext";
 type ExerciseBlockProps = {
 	selectedParam: string;
 	paramList: string[];
-	handleSetParam: (type: string, value: string) => void;
+	handleSetParam: (type: "name"|"reps"|"weight", value: string) => void;
 	openModal: () => void;
-	name: string;
+	name: "name"|"reps"|"weight";
 };
 
 export default function ExerciseBlock({

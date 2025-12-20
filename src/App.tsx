@@ -11,7 +11,6 @@ import { useContext } from "react";
 import Loader from "./components/Loader";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-
 function App() {
 	const { isAuthenticated, isLoading } = useContext(AuthContext)!;
 

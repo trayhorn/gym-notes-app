@@ -47,8 +47,12 @@ export default function AddWorkoutPage() {
     queryFn: fetchAllParams,
   });
 
-	const handleSetProperty = (type: string, value: string) => {
-		setSet((prev) => ({ ...prev, [type]: value }));
+	const handleSetProperty = (type: "name"|"reps"|"weight", value: string) => {
+		setSet((prev) => {
+      return prev[type] === value
+        ? { ...prev, [type]: "" }
+        : { ...prev, [type]: value };
+    });
 	}
 
 	const handleAddSet = () => {

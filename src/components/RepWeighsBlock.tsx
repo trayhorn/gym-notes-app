@@ -3,9 +3,9 @@ import { FaPlus } from "react-icons/fa";
 type RepWeighsBlockProps = {
   selectedParam: string;
   paramList: string[];
-  handleSetParam: (type: string, value: string) => void;
+  handleSetParam: (type: "name"|"reps"|"weight", value: string) => void;
   openModal: () => void;
-	name: string;
+	name: "name"|"reps"|"weight";
 
 };
 

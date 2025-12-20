@@ -4,6 +4,9 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useMutation } from "@tanstack/react-query";
 import Loader from "./Loader";
+import type { AxiosError } from "axios";
+import { ToastContainer, toast } from "react-toastify";
+
 
 type AuthFormProps = {
 	submitAction: (values: {
@@ -22,8 +25,11 @@ export default function AuthForm({ submitAction }: AuthFormProps) {
 			login(username);
 			navigate("/");
 		},
-		onError: (error) => {
-			console.error("Error during authentication:", error);
+		onError: (error: AxiosError<{message: string}>) => {
+			if(!error.response) return;
+			const { message } = error.response.data;
+			toast.error(message);
+			console.error("Error during authentication:", message);
 		}
 	});
 
@@ -57,6 +63,7 @@ export default function AuthForm({ submitAction }: AuthFormProps) {
 					</Form>
 				</Formik>
 			)}
+			<ToastContainer />
 		</>
 	);
 }

@@ -10,7 +10,7 @@ type ParamBlockProps = {
   selectedParam: string;
   name: "exercises" | "reps" | "weight";
   paramList: string[];
-	handleSetParam: (type: string, value: string) => void;
+	handleSetParam: (type: "name"|"reps"|"weight", value: string) => void;
 };
 
 export default function ParamBlock({

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchAllParams, addWorkout } from "../api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import type { addWorkoutData, Exercise, setType } from "../types";
+import type { addWorkoutData, WorkoutSetType, WorkoutSetPropertyType } from "../types";
 import ParamBlock from "../components/ParamBlock";
 import Loader from "../components/Loader";
 import { FilterContext } from "../context/FilterContext";
@@ -17,12 +17,12 @@ export default function AddWorkoutPage() {
 
 	const [exerciseFilterValue, setExerciseFilterValue] = useState("");
 	const [date, setDate] = useState<string>("");
-	const [set, setSet] = useState<setType>({
+	const [set, setSet] = useState<WorkoutSetType>({
 		name: "",
 		reps: "",
 		weight: "",
 	});
-	const [training, setTraining] = useState<setType[]>(() => {
+	const [training, setTraining] = useState<WorkoutSetType[]>(() => {
 		const savedTraining = localStorage.getItem("training");
 		return savedTraining ? JSON.parse(savedTraining) : [];
 	});
@@ -47,7 +47,7 @@ export default function AddWorkoutPage() {
     queryFn: fetchAllParams,
   });
 
-	const handleSetProperty = (type: "name"|"reps"|"weight", value: string) => {
+	const handleSetProperty = (type: WorkoutSetPropertyType, value: string) => {
 		setSet((prev) => {
       return prev[type] === value
         ? { ...prev, [type]: "" }
@@ -66,7 +66,7 @@ export default function AddWorkoutPage() {
 		}
 	};
 
-	const handleAddSuperset = (exercise: Exercise, supersetId: string) => {
+	const handleAddSuperset = (exercise: WorkoutSetType, supersetId: string) => {
 		setTraining(prev =>
 			prev.map(el =>
 				el.name === exercise.name
@@ -129,19 +129,22 @@ export default function AddWorkoutPage() {
 						>
 							<ParamBlock
 								selectedParam={set.name}
-								name="exercises"
+								paramBlockType="exercisesBlock"
+								name="name"
 								handleSetParam={handleSetProperty}
 								paramList={params?.exercises}
 							/>
 						</FilterContext>
 						<ParamBlock
 							selectedParam={set.reps}
+							paramBlockType="repsBlock"
 							name="reps"
 							handleSetParam={handleSetProperty}
 							paramList={params?.reps}
 						/>
 						<ParamBlock
 							selectedParam={set.weight}
+							paramBlockType="weightsBlock"
 							name="weight"
 							handleSetParam={handleSetProperty}
 							paramList={params?.weights}

@@ -1,11 +1,12 @@
 import { FaPlus } from "react-icons/fa";
+import type {WorkoutSetPropertyType} from "../types";
 
 type RepWeighsBlockProps = {
   selectedParam: string;
   paramList: string[];
-  handleSetParam: (type: "name"|"reps"|"weight", value: string) => void;
+  handleSetParam: (type: WorkoutSetPropertyType, value: string) => void;
   openModal: () => void;
-	name: "name"|"reps"|"weight";
+	name: WorkoutSetPropertyType;
 
 };
 

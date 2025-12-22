@@ -1,18 +1,14 @@
-import type { Workout } from "../types";
+import type { WorkoutCardType } from "../types";
 import DeletePopup from "./DeletePopup";
 import BaseModal from "./BaseModal";
 import { useModal } from "../hooks/useModal";
 import { groupExercises } from "../utils/groupExercises";
 
-type workoutCardProps = {
-  workout: Workout;
-}
 
-
-export default function WorkoutCard({ workout }: workoutCardProps) {
+export default function WorkoutCard({ workoutCard }: {workoutCard: WorkoutCardType}) {
 	const { openModal, closeModal, isModalOpen } = useModal();
-	const formattedDate = new Date(workout.date).toLocaleDateString("uk-UA");
-	const groupedExercises = groupExercises(workout.exercises);
+	const formattedDate = new Date(workoutCard.date).toLocaleDateString("uk-UA");
+	const groupedExercises = groupExercises(workoutCard.exercises);
 
   return (
 		<>
@@ -46,7 +42,7 @@ export default function WorkoutCard({ workout }: workoutCardProps) {
 				</button>
 			</div>
 			<BaseModal isOpen={isModalOpen} onRequestClose={closeModal}>
-				<DeletePopup closeModal={closeModal} workoutId={workout._id} />
+				<DeletePopup closeModal={closeModal} workoutId={workoutCard._id} />
 			</BaseModal>
 		</>
 	);

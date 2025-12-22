@@ -1,12 +1,12 @@
 import { useRef, useMemo } from "react";
-import type { Exercise } from "../types";
+import type { WorkoutSetType } from "../types";
 import { groupExercises } from "../utils/groupExercises";
 import { useSuperset } from "../hooks/useSuperset";
 
 
 type SetListProps = {
-    training: Exercise[];
-    handleAddSuperset: (exercise: Exercise, supersetId: string) => void;
+    training: WorkoutSetType[];
+    handleAddSuperset: (exercise: WorkoutSetType, supersetId: string) => void;
 };
 
 export default function SetList({training, handleAddSuperset}: SetListProps) {

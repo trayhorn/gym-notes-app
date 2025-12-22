@@ -1,30 +1,30 @@
-export type setType = {
+// Exercise
+export type WorkoutSetType = {
 	name: string;
 	reps: string;
 	weight: string;
+	supersetGroup?: string;
 };
 
+export type WorkoutSetPropertyType = "name" | "reps" | "weight";
 
-export type Exercise = {
-	name: string;
-	reps: string;
-	weight: string;
-	supersetGroup?: number;
-};
-
-export type Workout = {
+//Workout
+export type WorkoutCardType = {
 	_id: string;
 	date: string;
-	exercises: Exercise[];
+	exercises: WorkoutSetType[];
 };
 
-export type Params = {
+// Params
+export type TrainingOptionsType = {
 	_id: string;
-	ownder: string;
+	owner: string;
 	exercises: string[];
 	reps: string[];
 	weights: string[];
 };
+
+export type TrainingOptionsPropertyType = "exercises" | "reps" | "weights";
 
 export type addWorkoutData = {
 	date: string;

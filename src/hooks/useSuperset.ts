@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Exercise } from "../types";
+import type { WorkoutSetType } from "../types";
 import { nanoid } from "nanoid";
 
 
@@ -9,8 +9,8 @@ export function useSuperset(
   startYRef: React.RefObject<number>,
   initialTopRef: React.RefObject<number>,
   transformTopRef: React.RefObject<number>,
-  training: Exercise[],
-  handleAddSuperset: (exercise: Exercise, supersetId: string) => void
+  training: WorkoutSetType[],
+  handleAddSuperset: (exercise: WorkoutSetType, supersetId: string) => void
 ) {
   const [isDragging, setIsDragging] = useState(false);
   const [isMouseMoveActive, setIsMouseMoveActive] = useState(false);

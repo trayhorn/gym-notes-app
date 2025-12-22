@@ -4,29 +4,39 @@ import AddDataForm from "./AddDataForm";
 import ExerciseBlock from "./ExerciseBlock";
 import RepWeighsBlock from "./RepWeighsBlock";
 import { formatName } from "../utils/formatName";
+import type { WorkoutSetPropertyType} from "../types";
 
 
 type ParamBlockProps = {
   selectedParam: string;
-  name: "exercises" | "reps" | "weight";
+	paramBlockType: "exercisesBlock" | "repsBlock" | "weightsBlock";
+  name: WorkoutSetPropertyType;
   paramList: string[];
-	handleSetParam: (type: "name"|"reps"|"weight", value: string) => void;
+	handleSetParam: (type: WorkoutSetPropertyType, value: string) => void;
 };
 
 export default function ParamBlock({
   selectedParam,
+	paramBlockType,
   name,
 	handleSetParam,
 	paramList,
 }: ParamBlockProps) {
 	const { isModalOpen, openModal, closeModal } = useModal();
 
+	const convertedParamBlockType =
+		paramBlockType === "exercisesBlock"
+			? "exercises"
+			: paramBlockType === "repsBlock"
+			? "reps"
+			: "weights";
+
 	return (
 		<div className="max-h-[500px] overflow-auto p-sm">
 			<h3 className="text-center text-[20px] font-bold mt-sm mb-sm">
 				{formatName(name)}
 			</h3>
-			{name === "exercises" ? (
+			{paramBlockType === "exercisesBlock" ? (
 				<ExerciseBlock
 					selectedParam={selectedParam}
 					handleSetParam={handleSetParam}
@@ -45,7 +55,7 @@ export default function ParamBlock({
 			)}
 
 			<BaseModal isOpen={isModalOpen} onRequestClose={closeModal}>
-				<AddDataForm type={name} closeModal={closeModal} />
+				<AddDataForm type={convertedParamBlockType} closeModal={closeModal} />
 			</BaseModal>
 		</div>
 	);

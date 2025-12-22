@@ -1,13 +1,14 @@
 import { FaPlus } from "react-icons/fa";
 import { useContext } from "react";
 import { FilterContext } from "../context/FilterContext";
+import type {WorkoutSetPropertyType} from "../types";
 
 type ExerciseBlockProps = {
 	selectedParam: string;
 	paramList: string[];
-	handleSetParam: (type: "name"|"reps"|"weight", value: string) => void;
+	handleSetParam: (type: WorkoutSetPropertyType, value: string) => void;
 	openModal: () => void;
-	name: "name"|"reps"|"weight";
+	name: WorkoutSetPropertyType;
 };
 
 export default function ExerciseBlock({

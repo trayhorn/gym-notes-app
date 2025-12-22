@@ -1,7 +1,7 @@
 import axios from "axios";
 import type {
-	Workout,
-	Params,
+	WorkoutCardType,
+	TrainingOptionsType,
 } from "./types";
 
 import type { addWorkoutData } from "./types";
@@ -63,7 +63,7 @@ export const fetchCurrentUser = async () => {
 
 // Workouts API
 
-export const fetchAllWorkouts = async (): Promise<Workout[]> => {
+export const fetchAllWorkouts = async (): Promise<WorkoutCardType[]> => {
 	const { data } = await axios.get("/workouts/");
 	return data.workouts;
 }
@@ -79,7 +79,7 @@ export const deleteWorkout = ( data: { id: string }): Promise<{message: string}>
 
 // Params API
 
-export const fetchAllParams = async (): Promise<Params> => {
+export const fetchAllParams = async (): Promise<TrainingOptionsType> => {
 	const { data } = await axios.get("/params/");
 	return data.params;
 }

@@ -24,7 +24,7 @@ export default function ParamBlock({
 }: ParamBlockProps) {
 	const { isModalOpen, openModal, closeModal } = useModal();
 
-	const convertedParamBlockType =
+	const trainingParamType =
 		paramBlockType === "exercisesBlock"
 			? "exercises"
 			: paramBlockType === "repsBlock"
@@ -39,14 +39,16 @@ export default function ParamBlock({
 			{paramBlockType === "exercisesBlock" ? (
 				<ExerciseBlock
 					selectedParam={selectedParam}
+					trainingParamType={trainingParamType}
 					handleSetParam={handleSetParam}
 					paramList={paramList}
 					openModal={openModal}
-					name='name'
+					name={name}
 				/>
 			) : (
 				<RepWeighsBlock
 					selectedParam={selectedParam}
+					trainingParamType={trainingParamType}
 					paramList={paramList}
 					handleSetParam={handleSetParam}
 					openModal={openModal}
@@ -55,7 +57,7 @@ export default function ParamBlock({
 			)}
 
 			<BaseModal isOpen={isModalOpen} onRequestClose={closeModal}>
-				<AddDataForm type={convertedParamBlockType} closeModal={closeModal} />
+				<AddDataForm type={trainingParamType} closeModal={closeModal} />
 			</BaseModal>
 		</div>
 	);

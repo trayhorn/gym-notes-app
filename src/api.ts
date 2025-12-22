@@ -2,6 +2,7 @@ import axios from "axios";
 import type {
 	WorkoutCardType,
 	TrainingOptionsType,
+	TrainingOptionsPropertyType,
 } from "./types";
 
 import type { addWorkoutData } from "./types";
@@ -87,3 +88,10 @@ export const fetchAllParams = async (): Promise<TrainingOptionsType> => {
 export const addParam = ( data: { type: string; value: string }) => {
 	return axios.patch("/params/add", data);
 }
+
+export const deleteParam = (data: {
+	type: TrainingOptionsPropertyType;
+	item: string;
+}) => {
+	return axios.delete("/params/delete", { data });
+};

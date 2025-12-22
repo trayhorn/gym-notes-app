@@ -1,4 +1,4 @@
-// Exercise
+
 export type WorkoutSetType = {
 	name: string;
 	reps: string;
@@ -8,14 +8,14 @@ export type WorkoutSetType = {
 
 export type WorkoutSetPropertyType = "name" | "reps" | "weight";
 
-//Workout
+
 export type WorkoutCardType = {
 	_id: string;
 	date: string;
 	exercises: WorkoutSetType[];
 };
 
-// Params
+
 export type TrainingOptionsType = {
 	_id: string;
 	owner: string;
@@ -30,3 +30,8 @@ export type addWorkoutData = {
 	date: string;
 	exercises: { name: string; reps: string; weight: string }[];
 };
+
+export type deleteParamData = {
+	type: TrainingOptionsPropertyType;
+	item: string;
+}

@@ -1,10 +1,14 @@
 import BaseModal from "./BaseModal";
 import { useModal } from "../hooks/useModal";
 import AddDataForm from "./AddDataForm";
-import ExerciseBlock from "./ExerciseBlock";
-import RepWeighsBlock from "./RepWeighsBlock";
 import { formatName } from "../utils/formatName";
-import type { WorkoutSetPropertyType} from "../types";
+import type { WorkoutSetPropertyType } from "../types";
+import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteParam } from "../api";
+import type { deleteParamData } from "../types";
+import TrainingOptionsList from "./TrainingOptionsList";
+import { ExerciseFilter } from "./ExerciseFilter";
 
 
 type ParamBlockProps = {
@@ -22,6 +26,21 @@ export default function ParamBlock({
 	handleSetParam,
 	paramList,
 }: ParamBlockProps) {
+
+	// Filter
+
+	const [filterValue, setFilterValue] = useState("");
+
+	const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setFilterValue(e.target.value);
+	}
+
+	const filteredParamList = paramList.filter((item) =>
+		item.toLowerCase().includes(filterValue.toLowerCase())
+	);
+
+	// Other logic
+
 	const { isModalOpen, openModal, closeModal } = useModal();
 
 	const trainingParamType =
@@ -29,7 +48,31 @@ export default function ParamBlock({
 			? "exercises"
 			: paramBlockType === "repsBlock"
 			? "reps"
-			: "weights";
+				: "weights";
+
+
+	const [isDeleting, setIsDeleting] = useState(false);
+
+	const toggleDeleteMode = () => {
+		setIsDeleting((prev) => !prev);
+	};
+
+	const queryClient = useQueryClient();
+
+	const mutation = useMutation({
+		mutationFn: (data: deleteParamData) => deleteParam(data),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["params"] });
+		},
+	});
+
+	const handleListItemClick = (item: string) => {
+		if (isDeleting) {
+			mutation.mutate({ type: trainingParamType, item });
+		} else {
+			handleSetParam(name, item);
+		}
+	};
 
 	return (
 		<div className="max-h-[500px] overflow-auto p-sm">
@@ -37,22 +80,31 @@ export default function ParamBlock({
 				{formatName(name)}
 			</h3>
 			{paramBlockType === "exercisesBlock" ? (
-				<ExerciseBlock
-					selectedParam={selectedParam}
-					trainingParamType={trainingParamType}
-					handleSetParam={handleSetParam}
-					paramList={paramList}
-					openModal={openModal}
-					name={name}
-				/>
+				<>
+					<ExerciseFilter
+						filterValue={filterValue}
+						handleFilterChange={handleFilterChange}
+					/>
+					{filteredParamList.length === 0 && (
+						<p className="text-center">No exercises found</p>
+					)}
+					<TrainingOptionsList
+						selectedParam={selectedParam}
+						isDeleting={isDeleting}
+						dataList={filteredParamList}
+						toggleDeleteMode={toggleDeleteMode}
+						handleListItemClick={handleListItemClick}
+						openModal={openModal}
+					/>
+				</>
 			) : (
-				<RepWeighsBlock
+				<TrainingOptionsList
 					selectedParam={selectedParam}
-					trainingParamType={trainingParamType}
-					paramList={paramList}
-					handleSetParam={handleSetParam}
+					isDeleting={isDeleting}
+					dataList={paramList}
+					toggleDeleteMode={toggleDeleteMode}
+					handleListItemClick={handleListItemClick}
 					openModal={openModal}
-					name={name}
 				/>
 			)}
 

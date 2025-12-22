@@ -4,7 +4,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { addWorkoutData, WorkoutSetType, WorkoutSetPropertyType } from "../types";
 import ParamBlock from "../components/ParamBlock";
 import Loader from "../components/Loader";
-import { FilterContext } from "../context/FilterContext";
 import { Link } from "react-router";
 import { useNavigate, useLocation } from "react-router";
 import SetList from "../components/SetList";
@@ -15,7 +14,6 @@ export default function AddWorkoutPage() {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 
-	const [exerciseFilterValue, setExerciseFilterValue] = useState("");
 	const [date, setDate] = useState<string>("");
 	const [set, setSet] = useState<WorkoutSetType>({
 		name: "",
@@ -60,7 +58,7 @@ export default function AddWorkoutPage() {
 			setTraining((prev) => [...prev, set]);
 			localStorage.setItem("training", JSON.stringify(training));
 			setSet({ name: "", reps: "", weight: "" });
-			setExerciseFilterValue("");
+			// setExerciseFilterValue("");
 		} else {
 			alert("Please select all params");
 		}
@@ -124,17 +122,13 @@ export default function AddWorkoutPage() {
 							value={date}
 							onChange={(e) => setDate(e.target.value)}
 						/>
-						<FilterContext
-							value={{ exerciseFilterValue, setExerciseFilterValue }}
-						>
-							<ParamBlock
-								selectedParam={set.name}
-								paramBlockType="exercisesBlock"
-								name="name"
-								handleSetParam={handleSetProperty}
-								paramList={params?.exercises}
-							/>
-						</FilterContext>
+						<ParamBlock
+							selectedParam={set.name}
+							paramBlockType="exercisesBlock"
+							name="name"
+							handleSetParam={handleSetProperty}
+							paramList={params?.exercises}
+						/>
 						<ParamBlock
 							selectedParam={set.reps}
 							paramBlockType="repsBlock"

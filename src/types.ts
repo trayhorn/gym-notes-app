@@ -26,6 +26,8 @@ export type TrainingOptionsType = {
 
 export type TrainingOptionsPropertyType = "exercises" | "reps" | "weights";
 
+// Axios request data types
+
 export type addWorkoutData = {
 	date: string;
 	exercises: { name: string; reps: string; weight: string }[];

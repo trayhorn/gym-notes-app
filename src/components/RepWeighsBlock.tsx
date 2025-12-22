@@ -1,4 +1,3 @@
-import { FaPlus, FaMinus, FaCheck } from "react-icons/fa";
 import type {
 	deleteParamData,
 	TrainingOptionsPropertyType,
@@ -7,6 +6,7 @@ import type {
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteParam } from "../api";
+import TrainingOptionsList from "./TrainingOptionsList";
 
 type RepWeighsBlockProps = {
 	selectedParam: string;
@@ -32,7 +32,7 @@ export default function RepWeighsBlock({
 	};
 
 	const queryClient = useQueryClient();
-	
+
 	const mutation = useMutation({
 		mutationFn: (data: deleteParamData) => deleteParam(data),
 		onSuccess: () => {
@@ -49,29 +49,13 @@ export default function RepWeighsBlock({
 	};
 
 	return (
-		<ul className="blockList">
-			{paramList.map((item: string) => (
-				<li key={item}>
-					<button
-						className={`btn ${selectedParam === item ? "selected" : ""}`}
-						onClick={() => handleListItemClick(item)}
-					>
-						{item}
-					</button>
-				</li>
-			))}
-			<li className="flex items-center justify-center gap-sm">
-				<button className="btn bg-primary" onClick={toggleDeleteMode}>
-					{isDeleting ? (
-						<FaCheck color="#FFFFFF" size={25} />
-					) : (
-						<FaMinus color="#FFFFFF" size={25} />
-					)}
-				</button>
-				<button className="btn bg-primary" onClick={openModal}>
-					<FaPlus color="#FFFFFF" size={25} />
-				</button>
-			</li>
-		</ul>
+		<TrainingOptionsList
+			selectedParam={selectedParam}
+			isDeleting={isDeleting}
+			dataList={paramList}
+			toggleDeleteMode={toggleDeleteMode}
+			handleListItemClick={handleListItemClick}
+			openModal={openModal}
+		/>
 	);
 }

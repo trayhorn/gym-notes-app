@@ -1,10 +1,10 @@
-import { FaPlus, FaMinus, FaCheck } from "react-icons/fa";
 import { useContext, useState } from "react";
 import { FilterContext } from "../context/FilterContext";
 import type { deleteParamData } from "../types";
 import type { WorkoutSetPropertyType, TrainingOptionsPropertyType } from "../types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteParam } from "../api";
+import TrainingOptionsList from "./TrainingOptionsList";
 
 type ExerciseBlockProps = {
 	selectedParam: string;
@@ -28,7 +28,6 @@ export default function ExerciseBlock({
 	const toggleDeleteMode = () => {
 		setIsDeleting((prev) => !prev);
 	}
-
 
 	const {
 		exerciseFilterValue,
@@ -71,30 +70,14 @@ export default function ExerciseBlock({
 			{filteredParamList.length === 0 && (
 				<p className="text-center">No exercises found</p>
 			)}
-			<ul className="blockList">
-				{filteredParamList.map((item: string) => (
-					<li key={item}>
-						<button
-							className={`btn ${selectedParam === item ? "selected" : ""}`}
-							onClick={() => handleListItemClick(item)}
-						>
-							{item}
-						</button>
-					</li>
-				))}
-				<li className="flex items-center justify-center gap-sm">
-					<button className="btn bg-primary" onClick={toggleDeleteMode}>
-						{isDeleting ? (
-							<FaCheck color="#FFFFFF" size={25} />
-						) : (
-							<FaMinus color="#FFFFFF" size={25} />
-						)}
-					</button>
-					<button className="btn bg-primary" onClick={openModal}>
-						<FaPlus color="#FFFFFF" size={25} />
-					</button>
-				</li>
-			</ul>
+			<TrainingOptionsList
+				selectedParam={selectedParam}
+				isDeleting={isDeleting}
+				dataList={filteredParamList}
+				toggleDeleteMode={toggleDeleteMode}
+				handleListItemClick={handleListItemClick}
+				openModal={openModal}
+			/>
 		</>
 	);
 }

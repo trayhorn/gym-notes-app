@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { fetchAllWorkouts, fetchAllParams } from "../api";
-import type { Workout } from "../types";
+import type { WorkoutCardType } from "../types";
 
 export default function Chart() {
 	const [options, setOptions] = useState({});
@@ -14,7 +14,7 @@ export default function Chart() {
 	};
 
 	const extractExerciseData = useCallback(
-		(workouts: Workout[], exerciseName: string) => {
+		(workouts: WorkoutCardType[], exerciseName: string) => {
 			const filtered = workouts
 				.map((workout) => {
 					const found = workout.exercises.find(

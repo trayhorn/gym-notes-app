@@ -33,6 +33,11 @@ export type addWorkoutData = {
 	exercises: { name: string; reps: string; weight: string }[];
 };
 
+export type addParamData = {
+	type: TrainingOptionsPropertyType;
+	value: string;
+}
+
 export type deleteParamData = {
 	type: TrainingOptionsPropertyType;
 	item: string;

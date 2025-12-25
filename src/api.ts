@@ -5,11 +5,11 @@ import type {
 	TrainingOptionsPropertyType,
 } from "./types";
 
-import type { addWorkoutData } from "./types";
+import type { addWorkoutData, addParamData } from "./types";
 
-const BASE_URL = "http://localhost:3000";
+// const BASE_URL = "http://localhost:3000";
 
-// const BASE_URL = "https://gym-notes-app-backend.onrender.com";
+const BASE_URL = "https://gym-notes-app-backend.onrender.com";
 
 axios.defaults.baseURL = BASE_URL;
 
@@ -85,9 +85,9 @@ export const fetchAllParams = async (): Promise<TrainingOptionsType> => {
 	return data.params;
 }
 
-export const addParam = ( data: { type: string; value: string }) => {
+export const addParam = (data: addParamData) => {
 	return axios.patch("/params/add", data);
-}
+};
 
 export const deleteParam = (data: {
 	type: TrainingOptionsPropertyType;

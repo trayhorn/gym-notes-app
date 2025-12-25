@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { addParam } from "../api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { addParamData } from "../types";
+import type { AxiosError } from "axios";
+import { toast } from "react-toastify";
+
 
 type AddDataFormProps = {
 	type: "exercises" | "reps" | "weights";
@@ -10,9 +14,14 @@ type AddDataFormProps = {
 export default function AddDataForm({ type, closeModal }: AddDataFormProps) {
 	const queryClient = useQueryClient();
 	const mutation = useMutation({
-		mutationFn: (data: { type: string; value: string }) => addParam(data),
+		mutationFn: (data: addParamData) => addParam(data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["params"] });
+		},
+		onError: (error: AxiosError<{message: string}>) => {
+			if(!error.response) return;
+			const { message } = error.response.data;
+			toast.error(message);
 		}
 	});
 

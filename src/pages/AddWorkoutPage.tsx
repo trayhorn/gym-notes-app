@@ -7,12 +7,15 @@ import Loader from "../components/Loader";
 import { Link } from "react-router";
 import { useNavigate, useLocation } from "react-router";
 import SetList from "../components/SetList";
+import { FilterContext } from "../context/FilterContext";
 
 
 export default function AddWorkoutPage() {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
+
+	const [filterValue, setFilterValue] = useState("");
 
 	const [date, setDate] = useState<string>("");
 	const [set, setSet] = useState<WorkoutSetType>({
@@ -58,7 +61,7 @@ export default function AddWorkoutPage() {
 			setTraining((prev) => [...prev, set]);
 			localStorage.setItem("training", JSON.stringify(training));
 			setSet({ name: "", reps: "", weight: "" });
-			// setExerciseFilterValue("");
+			setFilterValue("");
 		} else {
 			alert("Please select all params");
 		}
@@ -122,13 +125,15 @@ export default function AddWorkoutPage() {
 							value={date}
 							onChange={(e) => setDate(e.target.value)}
 						/>
-						<ParamBlock
-							selectedParam={set.name}
-							paramBlockType="exercisesBlock"
-							name="name"
-							handleSetParam={handleSetProperty}
-							paramList={params?.exercises}
-						/>
+						<FilterContext value={{ filterValue, setFilterValue }}>
+							<ParamBlock
+								selectedParam={set.name}
+								paramBlockType="exercisesBlock"
+								name="name"
+								handleSetParam={handleSetProperty}
+								paramList={params?.exercises}
+							/>
+						</FilterContext>
 						<ParamBlock
 							selectedParam={set.reps}
 							paramBlockType="repsBlock"

@@ -9,6 +9,8 @@ import { deleteParam } from "../api";
 import type { deleteParamData } from "../types";
 import TrainingOptionsList from "./TrainingOptionsList";
 import { ExerciseFilter } from "./ExerciseFilter";
+import { useContext } from "react";
+import { FilterContext } from "../context/FilterContext";
 
 
 type ParamBlockProps = {
@@ -27,13 +29,7 @@ export default function ParamBlock({
 	paramList,
 }: ParamBlockProps) {
 
-	// Filter
-
-	const [filterValue, setFilterValue] = useState("");
-
-	const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFilterValue(e.target.value);
-	}
+	const { filterValue } = useContext(FilterContext)!;
 
 	const filteredParamList = paramList.filter((item) =>
 		item.toLowerCase().includes(filterValue.toLowerCase())
@@ -81,10 +77,7 @@ export default function ParamBlock({
 			</h3>
 			{paramBlockType === "exercisesBlock" ? (
 				<>
-					<ExerciseFilter
-						filterValue={filterValue}
-						handleFilterChange={handleFilterChange}
-					/>
+					<ExerciseFilter />
 					{filteredParamList.length === 0 && (
 						<p className="text-center">No exercises found</p>
 					)}

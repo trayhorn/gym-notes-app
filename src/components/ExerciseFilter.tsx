@@ -1,14 +1,9 @@
+import { useContext } from "react";
+import { FilterContext } from "../context/FilterContext";
 
+export function ExerciseFilter() {
+	const { filterValue, setFilterValue } = useContext(FilterContext)!;
 
-type ExerciseFilterProps = {
-	filterValue: string;
-	handleFilterChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
-
-export function ExerciseFilter({
-	filterValue,
-	handleFilterChange,
-}: ExerciseFilterProps) {
 	return (
 		<div className="mb-md flex items-center gap-md">
 			<label htmlFor="filter">Filter</label>
@@ -17,7 +12,7 @@ export function ExerciseFilter({
 				name="filter"
 				value={filterValue}
 				autoComplete="off"
-				onChange={handleFilterChange}
+				onChange={(e) => setFilterValue(e.target.value)}
 			/>
 		</div>
 	);

@@ -48,6 +48,24 @@
     font-weight: 400;
     font-family: inherit;
   }
+
+  .tooltipBtn:hover + .tooltipContent {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .tooltipContent {
+    position: absolute;
+    top: 35px;
+    background-color: lightblue;
+    padding: var(--spacing-sm);
+    width: fit-content;
+    border-radius: var(--spacing-sm);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+    z-index: 10;
+  }
 }
 
 @theme {

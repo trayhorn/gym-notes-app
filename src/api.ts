@@ -1,97 +1,105 @@
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 import type {
-	WorkoutCardType,
-	TrainingOptionsType,
-	TrainingOptionsPropertyType,
+  WorkoutCardType,
+  TrainingOptionsType,
+  TrainingOptionsPropertyType,
 } from "./types";
 
 import type { addWorkoutData, addParamData } from "./types";
 
-// const BASE_URL = "http://localhost:3000";
-
-const BASE_URL = "https://gym-notes-app-backend.onrender.com";
+const BASE_URL = "http://localhost:3000";
+// const BASE_URL = "https://gym-notes-app-backend.onrender.com";
 
 axios.defaults.baseURL = BASE_URL;
 
 const setAuthHeader = (token: string) => {
-	axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 const unsetAuthHeader = () => {
-	axios.defaults.headers.common.Authorization = "";
+  axios.defaults.headers.common.Authorization = "";
 };
 
 // Auth API
 
 export const registerUser = async (data: {
-	username: string;
-	password: string;
+  email: string;
+  username: string;
+  password: string;
 }): Promise<string> => {
-	const { data: response } = await axios.post("/auth/register", data);
-	if (response.token) {
+  const { data: response } = await axios.post("/auth/register", data);
+  if (response.token) {
     localStorage.setItem("authToken", response.token);
-		setAuthHeader(response.token);
-	}
+    setAuthHeader(response.token);
+  }
 
-	return response.username;
+  return response.username;
 };
 
 export const loginUser = async (data: {
-	username: string;
-	password: string;
+  username: string;
+  password: string;
 }): Promise<string> => {
-	const { data: response } = await axios.post("/auth/login", data);
-	if (response.token) {
-		localStorage.setItem("authToken", response.token);
-		setAuthHeader(response.token);
-	}
+  const { data: response } = await axios.post("/auth/login", data);
+  if (response.token) {
+    localStorage.setItem("authToken", response.token);
+    setAuthHeader(response.token);
+  }
 
-	return response.username;
+  return response.username;
 };
 
-
 export const logoutUser = async () => {
-	await axios.post("/auth/logout");
-	localStorage.removeItem("authToken");
-	unsetAuthHeader();
+  await axios.post("/auth/logout");
+  localStorage.removeItem("authToken");
+  unsetAuthHeader();
 };
 
 export const fetchCurrentUser = async () => {
-	setAuthHeader(localStorage.getItem("authToken")!);
+  setAuthHeader(localStorage.getItem("authToken")!);
 
-	const { data } = await axios.get("/auth/current");
-	return data.username;
+  const { data } = await axios.get("/auth/current");
+  return data.username;
+};
+
+export const verifyEmailApi = (data: {
+  token: string;
+}): Promise<AxiosResponse<{ message: string }>> => {
+  return axios.post("/auth/verify-email", data);
 };
 
 // Workouts API
 
 export const fetchAllWorkouts = async (): Promise<WorkoutCardType[]> => {
-	const { data } = await axios.get("/workouts/");
-	return data.workouts;
-}
+  const { data } = await axios.get("/workouts/");
+  return data.workouts;
+};
 
-export const addWorkout = ( data: addWorkoutData): Promise<{message: string}> => {
-	return axios.post("/workouts/add", data);
-}
+export const addWorkout = (
+  data: addWorkoutData,
+): Promise<{ message: string }> => {
+  return axios.post("/workouts/add", data);
+};
 
-export const deleteWorkout = ( data: { id: string }): Promise<{message: string}> => {
-	return axios.delete(`/workouts/delete`, { data });
-}
-
+export const deleteWorkout = (data: {
+  id: string;
+}): Promise<{ message: string }> => {
+  return axios.delete(`/workouts/delete`, { data });
+};
 
 // Params API
 
 export const fetchAllParams = async (): Promise<TrainingOptionsType> => {
-	const { data } = await axios.get("/params/");
-	return data.params;
-}
+  const { data } = await axios.get("/params/");
+  return data.params;
+};
 
 export const addParam = (data: addParamData) => {
-	return axios.patch("/params/add", data);
+  return axios.patch("/params/add", data);
 };
 
 export const deleteParam = (data: {
-	type: TrainingOptionsPropertyType;
-	item: string;
+  type: TrainingOptionsPropertyType;
+  item: string;
 }) => {
-	return axios.delete("/params/delete", { data });
+  return axios.delete("/params/delete", { data });
 };

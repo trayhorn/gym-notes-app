@@ -7,8 +7,8 @@ import type {
 
 import type { addWorkoutData, addParamData } from "./types";
 
-const BASE_URL = "http://localhost:3000";
-// const BASE_URL = "https://gym-notes-app-backend.onrender.com";
+// const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://gym-notes-app-backend.onrender.com";
 
 axios.defaults.baseURL = BASE_URL;
 

@@ -11,6 +11,7 @@ import { useContext } from "react";
 import Loader from "./components/Loader";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
+import VerifyEmail from "./components/VerifyEmail";
 
 function App() {
 	const { isAuthenticated, isLoading } = useContext(AuthContext)!;
@@ -71,6 +72,7 @@ function App() {
 						}
 					/>
 				</Route>
+				<Route path="/verify-email" element={<VerifyEmail />} />
 			</Routes>
 		</>
 	);

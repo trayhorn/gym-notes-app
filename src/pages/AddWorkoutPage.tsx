@@ -131,7 +131,7 @@ export default function AddWorkoutPage() {
 								paramBlockType="exercisesBlock"
 								name="name"
 								handleSetParam={handleSetProperty}
-								paramList={params?.exercises}
+								paramList={params.exercises || []}
 							/>
 						</FilterContext>
 						<ParamBlock
@@ -139,14 +139,14 @@ export default function AddWorkoutPage() {
 							paramBlockType="repsBlock"
 							name="reps"
 							handleSetParam={handleSetProperty}
-							paramList={params?.reps}
+							paramList={params.reps || []}
 						/>
 						<ParamBlock
 							selectedParam={set.weight}
 							paramBlockType="weightsBlock"
 							name="weight"
 							handleSetParam={handleSetProperty}
-							paramList={params?.weights}
+							paramList={params.weights || []}
 						/>
 
 						<button

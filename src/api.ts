@@ -90,7 +90,7 @@ export const deleteWorkout = (data: {
 
 export const fetchAllParams = async (): Promise<TrainingOptionsType> => {
   const { data } = await axios.get("/params/");
-  return data.params;
+  return data.params || [];
 };
 
 export const addParam = (data: addParamData) => {

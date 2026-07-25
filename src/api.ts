@@ -7,8 +7,8 @@ import type {
 
 import type { addWorkoutData, addParamData } from "./types";
 
-// const BASE_URL = "http://localhost:3000";
-const BASE_URL = "https://gym-notes-app-backend.onrender.com";
+const BASE_URL = "http://localhost:3000";
+// const BASE_URL = "https://gym-notes-app-backend.onrender.com";
 
 axios.defaults.baseURL = BASE_URL;
 
@@ -55,7 +55,8 @@ export const logoutUser = async () => {
 };
 
 export const fetchCurrentUser = async () => {
-  setAuthHeader(localStorage.getItem("authToken")!);
+  const token = localStorage.getItem("authToken");
+  if(token) setAuthHeader(token);
 
   const { data } = await axios.get("/auth/current");
   return data.username;
@@ -65,6 +66,19 @@ export const verifyEmailApi = (data: {
   token: string;
 }): Promise<AxiosResponse<{ message: string }>> => {
   return axios.post("/auth/verify-email", data);
+};
+
+export const requestPasswordResetApi = (data: {
+  email: string;
+}): Promise<AxiosResponse<{ message: string }>> => {
+  return axios.post("/auth/request-password-reset", data);
+};
+
+export const resetPasswordApi = (data: {
+  token: string;
+  newPassword: string;
+}): Promise<AxiosResponse<{ message: string }>> => {
+  return axios.patch("/auth/reset-password", data);
 };
 
 // Workouts API

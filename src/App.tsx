@@ -12,6 +12,8 @@ import Loader from "./components/Loader";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import VerifyEmail from "./components/VerifyEmail";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import RequestPasswordReset from "./pages/ForgotPasswordConfirmation";
 
 function App() {
 	const { isAuthenticated, isLoading } = useContext(AuthContext)!;
@@ -73,6 +75,8 @@ function App() {
 					/>
 				</Route>
 				<Route path="/verify-email" element={<VerifyEmail />} />
+				<Route path="/request-password-reset" element={<RequestPasswordReset />} />
+				<Route path="/reset-password" element={<ForgotPasswordPage />} />
 			</Routes>
 		</>
 	);

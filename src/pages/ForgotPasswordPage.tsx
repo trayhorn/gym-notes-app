@@ -12,7 +12,7 @@ const validationSchema = Yup.object({
     .min(8, "Password must be at least 8 characters")
     .matches(
       /(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}/,
-      "Password must contain at least one uppercase letter, one lowercase letter, one number",
+      "Password must contain at least one uppercase letter, one lowercase letter, one number"
     )
     .required("Password is required"),
   confirmNewPassword: Yup.string()
@@ -34,14 +34,14 @@ export default function ForgotPasswordPage() {
       resetPasswordApi({ token, newPassword }),
     onSuccess: () => {
       toast.success(
-        "Password reset successful. You can now log in with your new password.",
+        "Password reset successful. You can now log in with your new password."
       );
       navigate("/login");
     },
     onError: (error: AxiosError<{ message: string }>) => {
       console.error("Error during password reset:", error);
       toast.error(
-        "An error occurred while resetting the password. Please try again.",
+        "An error occurred while resetting the password. Please try again."
       );
     },
   });
@@ -62,7 +62,7 @@ export default function ForgotPasswordPage() {
         </h2>
         <Formik
           initialValues={{ newPassword: "", confirmNewPassword: "" }}
-          onSubmit={async (values) => {
+          onSubmit={async values => {
             mutation.mutate({ token, newPassword: values.newPassword });
           }}
           validationSchema={validationSchema}

@@ -12,8 +12,6 @@ export default function VerifyEmail() {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
 
-  if (!token) return <div>No token provided</div>;
-
   const mutation = useMutation<
     AxiosResponse<{ message: string }>,
     AxiosError<{ message: string }>,
@@ -23,8 +21,10 @@ export default function VerifyEmail() {
   });
 
   useEffect(() => {
-    mutation.mutate(token);
+    if (token) mutation.mutate(token);
   }, [token]);
+
+  if (!token) return <div>No token provided</div>;
 
   return (
     <>
@@ -35,8 +35,13 @@ export default function VerifyEmail() {
       {mutation.isSuccess && (
         <div className="flex flex-col items-center gap-4 h-[100vh] justify-center">
           <GoVerified className="text-green-500 text-2xl mx-auto size-16" />
-          <div>{mutation.data.data?.message || "Email verified successfully!"}</div>
-          <button onClick={() => navigate("/")} className="bg-blue-500 text-white px-4 py-2 rounded">
+          <div>
+            {mutation.data.data?.message || "Email verified successfully!"}
+          </div>
+          <button
+            onClick={() => navigate("/")}
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+          >
             Back to App
           </button>
         </div>

@@ -3,7 +3,11 @@ import { FaInfoCircle } from "react-icons/fa";
 export function PasswordInfo() {
   return (
     <div className="relative flex justify-end">
-      <FaInfoCircle size={25} color="lightblue" className="tooltipBtn cursor-pointer" />
+      <FaInfoCircle
+        size={25}
+        color="lightblue"
+        className="tooltipBtn cursor-pointer"
+      />
       <div className="tooltipContent">
         <p>Password requirements:</p>
         <ul>
@@ -14,5 +18,5 @@ export function PasswordInfo() {
         </ul>
       </div>
     </div>
-  )
+  );
 }

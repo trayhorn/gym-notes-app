@@ -56,7 +56,7 @@ export const logoutUser = async () => {
 
 export const fetchCurrentUser = async () => {
   const token = localStorage.getItem("authToken");
-  if(token) setAuthHeader(token);
+  if (token) setAuthHeader(token);
 
   const { data } = await axios.get("/auth/current");
   return data.username;
@@ -89,7 +89,7 @@ export const fetchAllWorkouts = async (): Promise<WorkoutCardType[]> => {
 };
 
 export const addWorkout = (
-  data: addWorkoutData,
+  data: addWorkoutData
 ): Promise<{ message: string }> => {
   return axios.post("/workouts/add", data);
 };

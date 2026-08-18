@@ -1,27 +1,24 @@
-
-export type WorkoutSetType = {
-	name: string;
-	reps: string;
-	weight: string;
-	supersetGroup?: string;
+export type ExerciseSet = {
+  name: string;
+  reps: string;
+  weight: string;
+  supersetGroup?: string;
 };
 
 export type WorkoutSetPropertyType = "name" | "reps" | "weight";
 
-
 export type WorkoutCardType = {
-	_id: string;
-	date: string;
-	exercises: WorkoutSetType[];
+  _id: string;
+  date: string;
+  exercises: ExerciseSet[];
 };
 
-
 export type TrainingOptionsType = {
-	_id: string;
-	owner: string;
-	exercises: string[];
-	reps: string[];
-	weights: string[];
+  _id: string;
+  owner: string;
+  exercises: string[];
+  reps: string[];
+  weights: string[];
 };
 
 export type TrainingOptionsPropertyType = "exercises" | "reps" | "weights";
@@ -29,16 +26,16 @@ export type TrainingOptionsPropertyType = "exercises" | "reps" | "weights";
 // Axios request data types
 
 export type addWorkoutData = {
-	date: string;
-	exercises: { name: string; reps: string; weight: string }[];
+  date: string;
+  exercises: ExerciseSet[];
 };
 
 export type addParamData = {
-	type: TrainingOptionsPropertyType;
-	value: string;
-}
+  type: TrainingOptionsPropertyType;
+  value: string;
+};
 
 export type deleteParamData = {
-	type: TrainingOptionsPropertyType;
-	item: string;
-}
+  type: TrainingOptionsPropertyType;
+  item: string;
+};

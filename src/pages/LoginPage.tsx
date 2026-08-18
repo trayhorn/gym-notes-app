@@ -19,7 +19,7 @@ const validationSchema = Yup.object({
     .min(8, "Password must be at least 8 characters")
     .matches(
       /(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}/,
-      "Password must contain at least one uppercase letter, one lowercase letter, one number",
+      "Password must contain at least one uppercase letter, one lowercase letter, one number"
     )
     .required("Password is required"),
 });
@@ -30,7 +30,7 @@ export default function LoginPage() {
 
   const mutation = useMutation({
     mutationFn: loginUser,
-    onSuccess: (username) => {
+    onSuccess: username => {
       login(username);
       navigate("/");
     },
@@ -38,7 +38,7 @@ export default function LoginPage() {
       if (!error.response) return;
       if (
         error.response.data.message.includes(
-          "fails to match the required pattern:",
+          "fails to match the required pattern:"
         )
       )
         return;
@@ -57,7 +57,7 @@ export default function LoginPage() {
           <Formik
             initialValues={{ username: "", password: "" }}
             validationSchema={validationSchema}
-            onSubmit={async (values) => {
+            onSubmit={async values => {
               mutation.mutate(values);
             }}
             validateOnChange={false}

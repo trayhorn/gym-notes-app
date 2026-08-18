@@ -5,7 +5,7 @@ import Loader from "../components/Loader";
 import { Link, useLocation } from "react-router";
 import NoWorkouts from "../components/NoWorkouts";
 
-function App() {
+function HomePage() {
   const {
     isPending,
     isError,
@@ -45,4 +45,4 @@ function App() {
   );
 }
 
-export default App;
+export default HomePage;

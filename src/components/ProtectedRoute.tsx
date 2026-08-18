@@ -4,15 +4,15 @@ import { AuthContext } from "../context/AuthContext";
 import type { JSX } from "react";
 
 export default function ProtectedRoute({
-	children,
+  children,
 }: {
-	children: JSX.Element;
-  }) {
-	const { isAuthenticated } = useContext(AuthContext)!;
+  children: JSX.Element;
+}) {
+  const { isAuthenticated } = useContext(AuthContext)!;
 
-	if (!isAuthenticated) {
-		return <Navigate to="/login" replace />;
-	}
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
-	return children;
+  return children;
 }

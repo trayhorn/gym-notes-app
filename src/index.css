@@ -70,7 +70,7 @@
 
 @theme {
   --font-roboto: "Roboto", sans-serif;
-  --font-montserrat: 'Montserrat', sans-serif;
+  --font-montserrat: "Montserrat", sans-serif;
 
   /* Основні кольори */
   --color-primary: #2563eb;
@@ -80,7 +80,7 @@
 
   /* Текст */
   --color-text-primary: #111827;
-  --color-text-secondary: #FFFFFF;
+  --color-text-secondary: #ffffff;
   --color-text-muted: #6b7280;
 
   /* Фон */
@@ -93,7 +93,7 @@
   --spacing-lg: 24px;
 
   --animate-custom-spin: rotation 1s linear infinite;
-  
+
   @keyframes rotation {
     0% {
       transform: translate(-50%, -50%) rotate(0deg);

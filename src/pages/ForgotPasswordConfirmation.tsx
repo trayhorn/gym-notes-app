@@ -3,7 +3,7 @@ import { requestPasswordResetApi } from "../api";
 import { useMutation } from "@tanstack/react-query";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-
+import type { AxiosError } from "axios";
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -11,18 +11,18 @@ const validationSchema = Yup.object({
     .required("Email is required"),
 });
 
-export default function RequestPasswordReset() {
+export default function RequestPasswordResetPage() {
   const mutation = useMutation({
     mutationFn: requestPasswordResetApi,
     onSuccess: () => {
       toast.success(
-        "Password reset request successful. Please check your email for further instructions.",
+        "Password reset request successful. Please check your email for further instructions."
       );
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError) => {
       console.error("Error during password reset request:", error);
       toast.error(
-        "An error occurred while requesting password reset. Please try again.",
+        "An error occurred while requesting password reset. Please try again."
       );
     },
   });
@@ -31,7 +31,7 @@ export default function RequestPasswordReset() {
     <div className="h-[100vh] flex flex-col justify-center">
       <Formik
         initialValues={{ email: "" }}
-        onSubmit={async (values) => {
+        onSubmit={async values => {
           mutation.mutate(values);
         }}
         validationSchema={validationSchema}

@@ -1,32 +1,31 @@
 import { useState } from "react";
-import type { WorkoutSetType } from "../types";
+import type { RefObject, PointerEvent } from "react";
+import type { ExerciseSet } from "../types";
 import { nanoid } from "nanoid";
 
-
 export function useSuperset(
-  ulElRef: React.RefObject<HTMLUListElement | null>,
-  btnElRef: React.RefObject<HTMLLIElement | null>,
-  startYRef: React.RefObject<number>,
-  initialTopRef: React.RefObject<number>,
-  transformTopRef: React.RefObject<number>,
-  training: WorkoutSetType[],
-  handleAddSuperset: (exercise: WorkoutSetType, supersetId: string) => void
+  ulElRef: RefObject<HTMLUListElement | null>,
+  btnElRef: RefObject<HTMLLIElement | null>,
+  startYRef: RefObject<number>,
+  initialTopRef: RefObject<number>,
+  transformTopRef: RefObject<number>,
+  training: ExerciseSet[],
+  handleAddSuperset: (exercise: ExerciseSet, supersetId: string) => void
 ) {
   const [isDragging, setIsDragging] = useState(false);
   const [isMouseMoveActive, setIsMouseMoveActive] = useState(false);
   const [isMouseUpActive, setIsMouseUpActive] = useState(false);
 
   function toggleDragging() {
-    setIsDragging((prev) => !prev);
+    setIsDragging(prev => !prev);
   }
 
-  function handlePointerDown(e: React.PointerEvent<HTMLUListElement>) {
-    if(!isDragging) return;
+  function handlePointerDown(e: PointerEvent<HTMLUListElement>) {
+    if (!isDragging) return;
 
     e.preventDefault();
-    console.log("Mouse down on item");
 
-    const targetLi = (e.target as HTMLElement).closest('.btn');
+    const targetLi = (e.target as HTMLElement).closest(".btn");
     if (!targetLi) return;
 
     btnElRef.current = targetLi as HTMLLIElement;
@@ -41,11 +40,10 @@ export function useSuperset(
     setIsMouseUpActive(true);
   }
 
-  function handlePointerMove(e: React.PointerEvent<HTMLUListElement>) {
-    if(!isMouseMoveActive) return;
+  function handlePointerMove(e: PointerEvent<HTMLUListElement>) {
+    if (!isMouseMoveActive) return;
 
     e.preventDefault();
-    console.log("Mouse move on item");
 
     const btnEl = btnElRef.current;
     if (!btnEl) return;
@@ -56,11 +54,10 @@ export function useSuperset(
     startYRef.current = e.clientY;
   }
 
-  function handlePointerUp(e: React.PointerEvent<HTMLUListElement>) {
-    if(!isMouseUpActive) return;
+  function handlePointerUp(e: PointerEvent<HTMLUListElement>) {
+    if (!isMouseUpActive) return;
 
     e.preventDefault();
-    console.log("Mouse up on item");
 
     const btnEl = btnElRef.current;
     const ulEl = ulElRef.current;
@@ -68,36 +65,33 @@ export function useSuperset(
 
     const movedRect = btnEl.getBoundingClientRect();
 
-    ulEl.querySelectorAll('.btn').forEach(otherBtn => {
-        if (otherBtn === btnEl) return;
+    ulEl.querySelectorAll(".btn").forEach(otherBtn => {
+      if (otherBtn === btnEl) return;
 
-        const otherRect = otherBtn.getBoundingClientRect();
+      const otherRect = otherBtn.getBoundingClientRect();
 
-        const isIntersecting =
+      const isIntersecting =
         movedRect.left < otherRect.right &&
         movedRect.right > otherRect.left &&
         movedRect.top < otherRect.bottom &&
         movedRect.bottom > otherRect.top;
 
-        if (isIntersecting) {
-            console.log('🔥 Intersected');
-            console.log('DragTarget:', btnEl.firstChild?.textContent);
-            console.log('Other Target:', otherBtn.firstChild?.textContent);
+      if (isIntersecting) {
+        const firstExerciseName = btnEl.firstChild?.textContent;
+        const secondExerciseName = otherBtn.firstChild?.textContent;
 
-            const firstExerciseName = btnEl.firstChild?.textContent;
-            const secondExerciseName = otherBtn.firstChild?.textContent;
+        const supersetId = nanoid();
 
-            const supersetId = nanoid();
-
-            training
-                .filter(
-                    ex => ex.name === firstExerciseName || ex.name === secondExerciseName
-                )
-                .forEach(ex => handleAddSuperset(ex, supersetId));
-        }
-        btnElRef.current!.style.transform = '';
-        transformTopRef.current = 0;
-        setIsDragging(false);
+        training
+          .filter(
+            ex =>
+              ex.name === firstExerciseName || ex.name === secondExerciseName
+          )
+          .forEach(ex => handleAddSuperset(ex, supersetId));
+      }
+      btnElRef.current!.style.transform = "";
+      transformTopRef.current = 0;
+      setIsDragging(false);
     });
 
     btnElRef.current = null;
@@ -111,6 +105,6 @@ export function useSuperset(
     handlePointerMove,
     handlePointerUp,
     isDragging,
-    toggleDragging
+    toggleDragging,
   };
 }
